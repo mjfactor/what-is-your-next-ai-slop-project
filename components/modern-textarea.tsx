@@ -42,49 +42,49 @@ export function ModernTextarea({
             className="relative w-full max-w-2xl mx-auto"
         >
             {/* Glassmorphism container */}
-            <div className="relative backdrop-blur-md bg-background/30 border border-border/50 rounded-2xl p-8 shadow-2xl">
 
-                {/* Content */}
-                <div className="relative z-10">
-                    <motion.h1
-                        initial={{ opacity: 0, y: -20 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.4, duration: 0.6 }}
-                        className="text-3xl font-bold text-foreground mb-2 text-center"
-                    >
-                        AI-Powered Project Planner
-                    </motion.h1>                    <motion.p
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ delay: 0.6, duration: 0.6 }}
-                        className="text-muted-foreground text-center mb-8"
-                    >
-                        Design and generate complete project structures with AI
-                    </motion.p>
 
-                    <motion.div
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        transition={{ delay: 0.8, duration: 0.6 }}
-                        whileHover={{ scale: 1.02 }}
-                        whileFocus={{ scale: 1.02 }}
-                    >                        <Textarea
-                            placeholder={placeholder}
-                            value={value}
-                            onChange={onChange}
-                            onKeyDown={handleKeyDown}
-                            className={cn(
-                                "min-h-[200px] text-lg resize-none",
-                                "bg-background/50 backdrop-blur-sm",
-                                "border-border/50 focus-visible:border-primary/50",
-                                "transition-all duration-300",
-                                "placeholder:text-muted-foreground/60",
-                                className
-                            )}
-                        />
-                    </motion.div>
-                </div>
+            {/* Content */}
+            <div className="relative z-10">
+                <motion.h1
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.4, duration: 0.6 }}
+                    className="text-3xl font-bold text-foreground mb-2 text-center"
+                >
+                    AI-Powered Project Planner
+                </motion.h1>                    <motion.p
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: 0.6, duration: 0.6 }}
+                    className="text-muted-foreground text-center mb-8"
+                >
+                    Design and generate complete project structures with AI
+                </motion.p>
+
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ delay: 0.8, duration: 0.6 }}
+                    whileHover={{ scale: 1.02 }}
+                    whileFocus={{ scale: 1.02 }}
+                >                        <Textarea
+                        placeholder={placeholder}
+                        value={value}
+                        onChange={onChange}
+                        onKeyDown={handleKeyDown}
+                        className={cn(
+                            "min-h-[200px] text-lg resize-none",
+                            "bg-background/50 backdrop-blur-sm",
+                            "border-border/50 focus-visible:border-primary/50",
+                            "transition-all duration-300",
+                            "placeholder:text-muted-foreground/60",
+                            className
+                        )}
+                    />
+                </motion.div>
             </div>
+
         </motion.div>
     );
 }
