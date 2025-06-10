@@ -21,12 +21,10 @@ export default function Home() {
           <ModernTextarea
             value={textValue}
             onChange={(e) => setTextValue(e.target.value)}
-            placeholder="What projShare your thoughts, ideas, or stories... ✨"
+            placeholder="A web app with Next.js, Vercel AI SDK, and shadcn/ui for a task management system"
           />
         </div>
       </motion.div>
-
-     
     </main>
   );
 }

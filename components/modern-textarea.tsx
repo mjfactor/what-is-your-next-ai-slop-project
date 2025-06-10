@@ -17,6 +17,19 @@ export function ModernTextarea({
     value,
     onChange
 }: ModernTextareaProps) {
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if (e.key === 'Tab' && (!value || value.trim() === '')) {
+            e.preventDefault();
+            if (onChange) {
+                // Create a synthetic event to mimic the onChange behavior
+                const syntheticEvent = {
+                    target: { value: placeholder },
+                    currentTarget: e.currentTarget
+                } as React.ChangeEvent<HTMLTextAreaElement>;
+                onChange(syntheticEvent);
+            }
+        }
+    };
     return (
         <motion.div
             initial={{ opacity: 0, y: 50, scale: 0.9 }}
@@ -30,34 +43,22 @@ export function ModernTextarea({
         >
             {/* Glassmorphism container */}
             <div className="relative backdrop-blur-md bg-background/30 border border-border/50 rounded-2xl p-8 shadow-2xl">
-                {/* Animated gradient border */}
-                <motion.div
-                    className="absolute inset-0 rounded-2xl bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 opacity-0 blur-sm"
-                    animate={{
-                        opacity: [0, 0.3, 0],
-                        scale: [1, 1.02, 1]
-                    }}
-                    transition={{
-                        duration: 4,
-                        repeat: Infinity,
-                        ease: "easeInOut"
-                    }}
-                />
 
                 {/* Content */}
-                <div className="relative z-10">                    <motion.h1
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.4, duration: 0.6 }}
-                    className="text-3xl font-bold text-foreground mb-2 text-center"
-                >
-                    AI-Powered Project Creator
-                </motion.h1>                    <motion.p
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 0.6, duration: 0.6 }}
-                    className="text-muted-foreground text-center mb-8"
-                >
+                <div className="relative z-10">
+                    <motion.h1
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4, duration: 0.6 }}
+                        className="text-3xl font-bold text-foreground mb-2 text-center"
+                    >
+                        AI-Powered Project Planner
+                    </motion.h1>                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.6, duration: 0.6 }}
+                        className="text-muted-foreground text-center mb-8"
+                    >
                         Design and generate complete project structures with AI
                     </motion.p>
 
@@ -67,11 +68,11 @@ export function ModernTextarea({
                         transition={{ delay: 0.8, duration: 0.6 }}
                         whileHover={{ scale: 1.02 }}
                         whileFocus={{ scale: 1.02 }}
-                    >
-                        <Textarea
+                    >                        <Textarea
                             placeholder={placeholder}
                             value={value}
                             onChange={onChange}
+                            onKeyDown={handleKeyDown}
                             className={cn(
                                 "min-h-[200px] text-lg resize-none",
                                 "bg-background/50 backdrop-blur-sm",
@@ -82,9 +83,6 @@ export function ModernTextarea({
                             )}
                         />
                     </motion.div>
-
-                    {/* Floating action indicators */}
-                  
                 </div>
             </div>
         </motion.div>

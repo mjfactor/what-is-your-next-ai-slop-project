@@ -1,6 +1,6 @@
-# AI-Powered Project Creator
+# AI-Powered Project Planner
 
-A cutting-edge AI-powered project creator that enables developers to visually design, configure, and generate complete project structures through an intuitive node-based interface. Built with modern web technologies and AI integration for an exceptional development experience.
+A cutting-edge AI-powered project planner that enables developers to visually design, configure, and generate complete project structures through an intuitive node-based interface. Built with modern web technologies and AI integration for an exceptional development experience.
 
 ## ✨ Features
 
