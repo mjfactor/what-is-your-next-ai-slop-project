@@ -2,6 +2,7 @@
 
 import { motion } from "framer-motion";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 import { cn } from "@/lib/utils";
 
 interface ModernTextareaProps {
@@ -9,13 +10,17 @@ interface ModernTextareaProps {
     className?: string;
     value?: string;
     onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+    letAIDecide?: boolean;
+    onToggleAIDecide?: (value: boolean) => void;
 }
 
 export function ModernTextarea({
     placeholder = "Start typing your thoughts...",
     className,
     value,
-    onChange
+    onChange,
+    letAIDecide = true,
+    onToggleAIDecide
 }: ModernTextareaProps) {
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Tab' && (!value || value.trim() === '')) {
@@ -56,11 +61,36 @@ export function ModernTextarea({
                 </motion.h1>                    <motion.p
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
-                    transition={{ delay: 0.6, duration: 0.6 }}
-                    className="text-muted-foreground text-center mb-8"
+                    transition={{ delay: 0.6, duration: 0.6 }} className="text-muted-foreground text-center mb-8"
                 >
                     Design and generate complete project structures with AI
                 </motion.p>
+
+                {/* AI Decision Toggle */}
+                <motion.div
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ delay: 0.7, duration: 0.5 }}
+                    className="flex items-center justify-center gap-3 mb-6"
+                >
+                    <span className={cn(
+                        "text-sm font-medium transition-colors",
+                        letAIDecide ? "text-muted-foreground" : "text-foreground"
+                    )}>
+                        Manual Selection
+                    </span>
+                    <Switch
+                        checked={letAIDecide}
+                        onCheckedChange={onToggleAIDecide}
+                        className="data-[state=checked]:bg-primary"
+                    />
+                    <span className={cn(
+                        "text-sm font-medium transition-colors",
+                        letAIDecide ? "text-foreground" : "text-muted-foreground"
+                    )}>
+                        Let AI Decide
+                    </span>
+                </motion.div>
 
                 <motion.div
                     initial={{ opacity: 0, scale: 0.95 }}

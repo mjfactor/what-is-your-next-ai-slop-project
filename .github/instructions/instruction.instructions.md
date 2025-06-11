@@ -9,3 +9,8 @@ applyTo: '**'
 - Respect the established design tokens and color palette
 - When styling components, use semantic color classes that work with both light and dark themes
 - Avoid hardcoded color values or custom color modifications
+
+## Frameworks
+- **Next.js**: Use the latest stable version (currently v15) with App Router
+- **React**: Use React 19 with concurrent features enabled
+- **shadcn/ui**: Use the latest version for UI components

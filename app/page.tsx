@@ -6,6 +6,7 @@ import { ModernTextarea } from "@/components/modern-textarea";
 
 export default function Home() {
   const [textValue, setTextValue] = useState("");
+  const [letAIDecide, setLetAIDecide] = useState(true);
 
   return (
     <main className="relative min-h-screen bg-background overflow-hidden">
@@ -16,12 +17,13 @@ export default function Home() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
         className="relative z-10 flex items-center justify-center min-h-screen p-8"
-      >
-        <div className="w-full max-w-4xl">
+      >        <div className="w-full max-w-4xl">
           <ModernTextarea
             value={textValue}
             onChange={(e) => setTextValue(e.target.value)}
             placeholder="A web app with Next.js, Vercel AI SDK, and shadcn/ui for a task management system"
+            letAIDecide={letAIDecide}
+            onToggleAIDecide={setLetAIDecide}
           />
         </div>
       </motion.div>
