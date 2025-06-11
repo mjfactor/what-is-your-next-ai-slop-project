@@ -115,19 +115,6 @@ export async function POST(req: NextRequest) {
             schema: ProjectStructureSchema,
         });
 
-        // Console log the AI generation result
-        console.log('🤖 API Route - AI Generation Complete:', {
-            projectName: result.object.projectName,
-            techStackSummary: {
-                frontend: result.object.techStack.frontend,
-                backend: result.object.techStack.backend,
-                database: result.object.techStack.database,
-                deployment: result.object.techStack.deployment
-            },
-            nodeCount: result.object.nodes.length,
-            edgeCount: result.object.edges.length,
-            timestamp: new Date().toISOString()
-        });
 
         // Access grounding metadata if needed
         const { groundingMetadata, safetyRatings } = result.providerMetadata?.google || {};
@@ -141,13 +128,6 @@ export async function POST(req: NextRequest) {
                 safetyRatings,
             }
         };
-
-        console.log('✅ API Route - Sending Response:', {
-            success: response.success,
-            hasProjectStructure: !!response.projectStructure,
-            hasMetadata: !!response.metadata,
-            timestamp: new Date().toISOString()
-        });
 
         return NextResponse.json(response);
     } catch (error) {

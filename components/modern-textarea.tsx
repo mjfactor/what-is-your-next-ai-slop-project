@@ -3,9 +3,8 @@
 import { motion } from "framer-motion";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { useChat } from '@ai-sdk/react';
-import { useState } from 'react';
 
 interface ModernTextareaProps {
     placeholder?: string;
@@ -14,6 +13,8 @@ interface ModernTextareaProps {
     onChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
     letAIDecide?: boolean;
     onToggleAIDecide?: (value: boolean) => void;
+    isLoading?: boolean;
+    onSubmit?: (projectIdea: string) => void;
 }
 
 export function ModernTextarea({
@@ -22,61 +23,15 @@ export function ModernTextarea({
     value,
     onChange,
     letAIDecide = true,
-    onToggleAIDecide
+    onToggleAIDecide,
+    isLoading = false,
+    onSubmit
 }: ModernTextareaProps) {
-    const [isLoading, setIsLoading] = useState(false);
-    const [projectStructure, setProjectStructure] = useState(null);
-
-    // Keep useChat available for potential future chat functionality
-    const { messages, input, handleInputChange, handleSubmit } = useChat();
-
-    const handleProjectSubmission = async (projectIdea: string) => {
-        if (!projectIdea.trim()) return;
-        if (letAIDecide) {
-            setIsLoading(true);
-            try {
-                console.log('🚀 Submitting project idea:', projectIdea);
-
-                const response = await fetch('/api/let-ai-decide', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        projectIdea,
-                    }),
-                });
-
-                const data = await response.json();
-
-                if (response.ok) {
-                    console.log('✅ Route.ts Response Success:', data);
-                    console.log('📊 Project Structure:', data.projectStructure);
-                    console.log('🔧 Tech Stack:', data.projectStructure?.techStack);
-                    console.log('📈 Nodes:', data.projectStructure?.nodes);
-                    console.log('🔗 Edges:', data.projectStructure?.edges);
-                    console.log('💡 Recommendations:', data.projectStructure?.recommendations);
-                    console.log('⏱️ Timeline:', data.projectStructure?.estimatedTimeline);
-
-                    setProjectStructure(data.projectStructure);
-                } else {
-                    console.error('❌ Route.ts Response Error:', data);
-                }
-            } catch (error) {
-                console.error('🔥 API Call Error:', error);
-            } finally {
-                setIsLoading(false);
-            }
-        } else {
-            // For future manual selection logic
-        }
-    };
-
     const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
         if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
             e.preventDefault();
-            if (value && value.trim()) {
-                handleProjectSubmission(value);
+            if (value && value.trim() && onSubmit) {
+                onSubmit(value);
             }
         } else if (e.key === 'Tab' && (!value || value.trim() === '')) {
             e.preventDefault();
@@ -185,26 +140,24 @@ export function ModernTextarea({
                                 <span className="text-sm">Generating project structure...</span>
                             </div>
                         </motion.div>
-                    )}
-
-                    {/* Submit button */}
-                    <motion.button
+                    )}                    {/* Submit button */}                    <motion.div
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.9, duration: 0.5 }}
-                        onClick={() => value && value.trim() && handleProjectSubmission(value)}
-                        disabled={isLoading || !value?.trim()}
-                        className={cn(
-                            "absolute bottom-4 right-4 px-4 py-2 rounded-md",
-                            "bg-primary text-primary-foreground text-sm font-medium",
-                            "transition-all duration-200",
-                            "hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50",
-                            "disabled:opacity-50 disabled:cursor-not-allowed",
-                            isLoading && "animate-pulse"
-                        )}
+                        className="absolute bottom-4 right-4"
                     >
-                        {isLoading ? 'Generating...' : 'Generate Project'}
-                    </motion.button>                </motion.div>
+                        <Button
+                            onClick={() => value && value.trim() && onSubmit && onSubmit(value)}
+                            disabled={isLoading || !value?.trim()}
+                            size="sm"
+                            className={cn(
+                                "transition-all duration-200",
+                                isLoading && "animate-pulse"
+                            )}
+                        >
+                            {isLoading ? 'Generating...' : 'Generate Project'}
+                        </Button>
+                    </motion.div></motion.div>
             </div>
         </motion.div>
     );
