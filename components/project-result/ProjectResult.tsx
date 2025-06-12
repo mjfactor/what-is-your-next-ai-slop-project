@@ -224,12 +224,15 @@ export function ProjectResult({
             {/* Navigation */}
             <Card>
                 <CardContent className="p-4">
-                    <div className="flex flex-wrap gap-2">
-                        {[
+                    <div className="flex flex-wrap gap-2">                        {[
                             { id: 'overview', label: 'Overview', icon: <Target className="w-4 h-4" /> },
                             { id: 'techstack', label: 'Tech Stack', icon: <Code2 className="w-4 h-4" /> },
                             { id: 'architecture', label: 'Architecture', icon: <Settings className="w-4 h-4" /> },
                             { id: 'phases', label: 'Development Phases', icon: <GitBranch className="w-4 h-4" /> },
+                            { id: 'structure', label: 'Project Structure', icon: <FileText className="w-4 h-4" /> },
+                            { id: 'recommendations', label: 'Recommendations', icon: <CheckCircle className="w-4 h-4" /> },
+                            { id: 'performance', label: 'Performance', icon: <Zap className="w-4 h-4" /> },
+                            { id: 'deployment', label: 'Deployment', icon: <Globe className="w-4 h-4" /> },
                             { id: 'security', label: 'Security', icon: <Shield className="w-4 h-4" /> },
                             { id: 'testing', label: 'Testing', icon: <TestTube className="w-4 h-4" /> },
                             { id: 'resources', label: 'Resources', icon: <BookOpen className="w-4 h-4" /> },
@@ -422,9 +425,7 @@ export function ProjectResult({
                         </CardContent>
                     </Card>
                 </CollapsibleContent>
-            </Collapsible>
-
-            {/* Development Phases */}
+            </Collapsible>            {/* Development Phases */}
             <Collapsible open={isOpen('phases')}>
                 <CollapsibleContent>
                     <Card>
@@ -487,6 +488,366 @@ export function ProjectResult({
                                 </div>
                             ) : (
                                 <p className="text-muted-foreground">No development phases defined yet.</p>
+                            )}
+                        </CardContent>
+                    </Card>
+                </CollapsibleContent>
+            </Collapsible>
+
+            {/* Project Structure */}
+            <Collapsible open={isOpen('structure')}>
+                <CollapsibleContent>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <FileText className="w-5 h-5" />
+                                Project Structure
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            {projectStructure ? (
+                                <>
+                                    {/* Setup Commands */}
+                                    {projectStructure.setupCommands && projectStructure.setupCommands.length > 0 && (
+                                        <div>
+                                            <h4 className="font-semibold mb-3">Setup Commands</h4>
+                                            <div className="space-y-2">
+                                                {projectStructure.setupCommands.map((command: string, i: number) => (
+                                                    <div key={i} className="bg-muted p-3 rounded-lg">
+                                                        <code className="text-sm">{command}</code>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Environment Variables */}
+                                    {projectStructure.environmentVariables && projectStructure.environmentVariables.length > 0 && (
+                                        <div>
+                                            <h4 className="font-semibold mb-3">Environment Variables</h4>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                                                {projectStructure.environmentVariables.map((envVar: any, i: number) => (
+                                                    <Card key={i} className="p-3">
+                                                        <div className="flex items-center justify-between mb-2">
+                                                            <code className="font-medium text-sm">{envVar.name}</code>
+                                                            {envVar.required && <Badge variant="destructive" className="text-xs">Required</Badge>}
+                                                        </div>
+                                                        <p className="text-xs text-muted-foreground mb-1">{envVar.description}</p>
+                                                        <code className="text-xs bg-muted p-1 rounded">{envVar.example}</code>
+                                                    </Card>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* File Structure */}
+                                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                        {projectStructure.rootFiles && projectStructure.rootFiles.length > 0 && (
+                                            <div>
+                                                <h4 className="font-semibold mb-3">Root Files</h4>
+                                                <div className="space-y-2">
+                                                    {projectStructure.rootFiles.map((file: any, i: number) => (
+                                                        <div key={i} className="flex items-center justify-between p-2 bg-muted rounded">
+                                                            <div className="flex items-center gap-2">
+                                                                <FileText className="w-4 h-4 text-blue-500" />
+                                                                <span className="text-sm font-mono">{file.path}</span>
+                                                            </div>
+                                                            <Badge 
+                                                                variant={
+                                                                    file.importance === 'Essential' ? 'default' :
+                                                                    file.importance === 'Recommended' ? 'secondary' : 'outline'
+                                                                }
+                                                                className="text-xs"
+                                                            >
+                                                                {file.importance}
+                                                            </Badge>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+
+                                        {projectStructure.directories && projectStructure.directories.length > 0 && (
+                                            <div>
+                                                <h4 className="font-semibold mb-3">Directory Structure</h4>
+                                                <div className="space-y-2">
+                                                    {projectStructure.directories.map((dir: any, i: number) => (
+                                                        <div key={i} className="flex items-center justify-between p-2 bg-muted rounded">
+                                                            <div className="flex items-center gap-2">
+                                                                <FileText className="w-4 h-4 text-orange-500" />
+                                                                <span className="text-sm font-mono">{dir.path}/</span>
+                                                            </div>
+                                                            <Badge 
+                                                                variant={
+                                                                    dir.importance === 'Essential' ? 'default' :
+                                                                    dir.importance === 'Recommended' ? 'secondary' : 'outline'
+                                                                }
+                                                                className="text-xs"
+                                                            >
+                                                                {dir.importance}
+                                                            </Badge>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+
+                                    {/* Key Files */}
+                                    {projectStructure.keyFiles && projectStructure.keyFiles.length > 0 && (
+                                        <div>
+                                            <h4 className="font-semibold mb-3">Key Files</h4>
+                                            <div className="space-y-3">
+                                                {projectStructure.keyFiles.slice(0, 5).map((file: any, i: number) => (
+                                                    <Card key={i} className="p-3">
+                                                        <div className="flex items-center justify-between mb-2">
+                                                            <code className="font-medium text-sm">{file.path}</code>
+                                                            <Badge 
+                                                                variant={
+                                                                    file.importance === 'Essential' ? 'default' :
+                                                                    file.importance === 'Recommended' ? 'secondary' : 'outline'
+                                                                }
+                                                                className="text-xs"
+                                                            >
+                                                                {file.importance}
+                                                            </Badge>
+                                                        </div>
+                                                        <p className="text-xs text-muted-foreground">{file.description}</p>
+                                                    </Card>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+                                </>
+                            ) : (
+                                <p className="text-muted-foreground">No project structure information available yet.</p>
+                            )}
+                        </CardContent>
+                    </Card>
+                </CollapsibleContent>
+            </Collapsible>
+
+            {/* Recommendations */}
+            <Collapsible open={isOpen('recommendations')}>
+                <CollapsibleContent>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <CheckCircle className="w-5 h-5" />
+                                Recommendations & Best Practices
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent className="space-y-6">
+                            {recommendations ? (
+                                <>
+                                    {/* Best Practices */}
+                                    {recommendations.bestPractices && recommendations.bestPractices.length > 0 && (
+                                        <div>
+                                            <h4 className="font-semibold mb-3">Best Practices</h4>
+                                            <div className="space-y-3">
+                                                {recommendations.bestPractices.map((practice: any, i: number) => (
+                                                    <Card key={i} className="p-4">
+                                                        <div className="flex items-center gap-2 mb-2">
+                                                            <CheckCircle className="w-4 h-4 text-green-500" />
+                                                            <h5 className="font-medium">{practice.category}</h5>
+                                                        </div>
+                                                        <p className="text-sm font-medium mb-2">{practice.practice}</p>
+                                                        <p className="text-xs text-muted-foreground mb-2">{practice.reasoning}</p>
+                                                        <div className="bg-muted p-2 rounded text-xs">
+                                                            <strong>Implementation:</strong> {practice.implementation}
+                                                        </div>
+                                                    </Card>
+                                                ))}
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {/* Other Recommendation Categories */}
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        {['codeQuality', 'developmentWorkflow', 'collaboration', 'documentation'].map((category) => {
+                                            const items = recommendations[category] || [];
+                                            if (items.length === 0) return null;
+
+                                            return (
+                                                <div key={category}>
+                                                    <h4 className="font-semibold mb-3 capitalize">{category.replace(/([A-Z])/g, ' $1').trim()}</h4>
+                                                    <div className="space-y-2">
+                                                        {items.slice(0, 5).map((item: string, i: number) => (
+                                                            <div key={i} className="flex items-start gap-2">
+                                                                <CheckCircle className="w-4 h-4 text-blue-500 mt-0.5" />
+                                                                <span className="text-sm">{item}</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                </>
+                            ) : (
+                                <p className="text-muted-foreground">No recommendations available yet.</p>
+                            )}
+                        </CardContent>
+                    </Card>
+                </CollapsibleContent>
+            </Collapsible>
+
+            {/* Performance */}
+            <Collapsible open={isOpen('performance')}>
+                <CollapsibleContent>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <Zap className="w-5 h-5" />
+                                Performance Optimization
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            {performance.length > 0 ? (
+                                <div className="space-y-4">
+                                    {performance.map((perfStrategy: any, i: number) => (
+                                        <Card key={i} className="p-4">
+                                            <h4 className="font-semibold mb-3">{perfStrategy.category}</h4>
+                                            
+                                            {perfStrategy.techniques && perfStrategy.techniques.length > 0 && (
+                                                <div className="mb-3">
+                                                    <p className="text-sm font-medium mb-2">Optimization Techniques:</p>
+                                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
+                                                        {perfStrategy.techniques.map((technique: string, j: number) => (
+                                                            <div key={j} className="flex items-center gap-2">
+                                                                <Zap className="w-3 h-3 text-yellow-500" />
+                                                                <span className="text-sm">{technique}</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {perfStrategy.tools && perfStrategy.tools.length > 0 && (
+                                                <div className="mb-3">
+                                                    <p className="text-sm font-medium mb-2">Recommended Tools:</p>
+                                                    <div className="flex flex-wrap gap-1">
+                                                        {perfStrategy.tools.map((tool: string, j: number) => (
+                                                            <Badge key={j} variant="secondary" className="text-xs">{tool}</Badge>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {perfStrategy.metrics && perfStrategy.metrics.length > 0 && (
+                                                <div className="mb-3">
+                                                    <p className="text-sm font-medium mb-2">Key Metrics:</p>
+                                                    <div className="flex flex-wrap gap-1">
+                                                        {perfStrategy.metrics.map((metric: string, j: number) => (
+                                                            <Badge key={j} variant="outline" className="text-xs">{metric}</Badge>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {perfStrategy.implementation && perfStrategy.implementation.length > 0 && (
+                                                <div>
+                                                    <p className="text-sm font-medium mb-2">Implementation Steps:</p>
+                                                    <ul className="text-sm text-muted-foreground space-y-1">
+                                                        {perfStrategy.implementation.slice(0, 3).map((step: string, j: number) => (
+                                                            <li key={j} className="flex items-start gap-2">
+                                                                <TrendingUp className="w-3 h-3 text-green-500 mt-1" />
+                                                                {step}
+                                                            </li>
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            )}
+                                        </Card>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-muted-foreground">No performance optimization strategies defined yet.</p>
+                            )}
+                        </CardContent>
+                    </Card>
+                </CollapsibleContent>
+            </Collapsible>
+
+            {/* Deployment */}
+            <Collapsible open={isOpen('deployment')}>
+                <CollapsibleContent>
+                    <Card>
+                        <CardHeader>
+                            <CardTitle className="flex items-center gap-2">
+                                <Globe className="w-5 h-5" />
+                                Deployment Configuration
+                            </CardTitle>
+                        </CardHeader>
+                        <CardContent>
+                            {deployment.length > 0 ? (
+                                <div className="space-y-4">
+                                    {deployment.map((deployConfig: any, i: number) => (
+                                        <Card key={i} className="p-4">
+                                            <div className="flex items-center justify-between mb-3">
+                                                <h4 className="font-semibold">{deployConfig.platform}</h4>
+                                                <Badge variant="outline">{deployConfig.type}</Badge>
+                                            </div>
+
+                                            {deployConfig.requirements && deployConfig.requirements.length > 0 && (
+                                                <div className="mb-3">
+                                                    <p className="text-sm font-medium mb-2">Requirements:</p>
+                                                    <div className="space-y-1">
+                                                        {deployConfig.requirements.map((req: string, j: number) => (
+                                                            <div key={j} className="flex items-center gap-2">
+                                                                <CheckCircle className="w-3 h-3 text-blue-500" />
+                                                                <span className="text-sm">{req}</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {deployConfig.steps && deployConfig.steps.length > 0 && (
+                                                <div className="mb-3">
+                                                    <p className="text-sm font-medium mb-2">Deployment Steps:</p>
+                                                    <div className="space-y-2">
+                                                        {deployConfig.steps.map((step: string, j: number) => (
+                                                            <div key={j} className="flex items-start gap-3">
+                                                                <div className="w-5 h-5 rounded-full bg-primary text-primary-foreground text-xs flex items-center justify-center font-medium">
+                                                                    {j + 1}
+                                                                </div>
+                                                                <span className="text-sm">{step}</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {deployConfig.environment && deployConfig.environment.length > 0 && (
+                                                <div className="mb-3">
+                                                    <p className="text-sm font-medium mb-2">Environment Setup:</p>
+                                                    <div className="flex flex-wrap gap-1">
+                                                        {deployConfig.environment.map((env: string, j: number) => (
+                                                            <Badge key={j} variant="secondary" className="text-xs">{env}</Badge>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+
+                                            {deployConfig.monitoring && deployConfig.monitoring.length > 0 && (
+                                                <div>
+                                                    <p className="text-sm font-medium mb-2">Monitoring & Observability:</p>
+                                                    <div className="space-y-1">
+                                                        {deployConfig.monitoring.map((monitor: string, j: number) => (
+                                                            <div key={j} className="flex items-center gap-2">
+                                                                <TrendingUp className="w-3 h-3 text-green-500" />
+                                                                <span className="text-sm">{monitor}</span>
+                                                            </div>
+                                                        ))}
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </Card>
+                                    ))}
+                                </div>
+                            ) : (
+                                <p className="text-muted-foreground">No deployment configuration available yet.</p>
                             )}
                         </CardContent>
                     </Card>

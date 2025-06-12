@@ -11,25 +11,28 @@ import { ProjectResult } from "@/components/project-result/ProjectResult";
 
 
 export default function Home() {
-
   const [projectIdea, setProjectIdea] = useState("");
+
   const { object, submit, isLoading } = useObject({
     api: '/api/let-ai-decide',
     schema: ProjectStructureSchema,
     onFinish: ({ object, error }) => {
       if (error) {
         console.error("Schema validation error:", error);
-        return;
       }
       console.log("Project structure generated successfully:", object);
     }
   });
 
+  const handleSubmit = () => {
+    console.log("Submitting project idea:", projectIdea);
+    submit(projectIdea);
+  };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
       e.preventDefault();
-      submit(projectIdea);
+      handleSubmit();
     }
   };
 
@@ -92,8 +95,7 @@ export default function Home() {
                     value={projectIdea}
                     onChange={(e) => setProjectIdea(e.target.value)}
                     onKeyDown={handleKeyDown}
-                    className="min-h-32 resize-none text-base"
-                    disabled={isLoading}
+                    className="min-h-32 resize-none text-base" disabled={isLoading}
                   />
                 </div>
                 {/* Submit Button */}
@@ -103,7 +105,7 @@ export default function Home() {
                   transition={{ duration: 0.5, delay: 1.2 }}
                 >
                   <Button
-                    onClick={() => submit(projectIdea)}
+                    onClick={handleSubmit}
                     disabled={!projectIdea.trim() || isLoading}
                     className="w-full h-12 text-base font-medium"
                     size="lg"
@@ -177,8 +179,6 @@ export default function Home() {
             recommendations={object?.recommendations}
             security={object?.security}
             testing={object?.testing}
-            performance={object?.performance}
-            deployment={object?.deployment}
             learningResources={object?.learningResources}
             roadmap={object?.roadmap}
           />
