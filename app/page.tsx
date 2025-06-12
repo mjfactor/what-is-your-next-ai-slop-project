@@ -2,50 +2,38 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ModernTextarea } from "@/components/modern-textarea";
+import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import { experimental_useObject as useObject } from '@ai-sdk/react';
+import { ProjectStructureSchema } from '@/lib/schema/let-ai-decide-schema';
+
 
 export default function Home() {
-  const [textValue, setTextValue] = useState("");
   const [letAIDecide, setLetAIDecide] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
+  const [projectIdea, setProjectIdea] = useState("");
+  const { object, submit, isLoading } = useObject({
+    api: '/api/let-ai-decide',
+    schema: ProjectStructureSchema,
+    onFinish: (object) => {
+      console.log("Project structure generated successfully:", object);
+    }
+  });
 
-  const handleProjectSubmission = async (projectIdea: string) => {
-    if (!projectIdea.trim()) return;
 
-    if (letAIDecide) {
-      setIsLoading(true);
-      try {
-        console.log('🚀 Submitting project idea:', projectIdea);
-
-        const response = await fetch('/api/let-ai-decide', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            projectIdea,
-          }),
-        });
-
-        const data = await response.json();
-
-        if (response.ok) {
-          console.log('✅ Route.ts Response:', data);
-        } else {
-          console.error('❌ Route.ts Response Error:', data);
-        }
-      } catch (error) {
-        console.error('🔥 API Call Error:', error);
-      } finally {
-        setIsLoading(false);
-      }
-    } else {
-      // For future manual selection logic
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Enter' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      submit(projectIdea);
     }
   };
-
   return (
     <main className="relative min-h-screen bg-background overflow-hidden">
+      {/* Animated Background Elements */}
+      <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
+      <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse delay-1000" />
 
       {/* Main Content */}
       <motion.div
@@ -53,17 +41,127 @@ export default function Home() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
         className="relative z-10 flex items-center justify-center min-h-screen p-8"
-      >        <div className="w-full max-w-4xl">
-          <ModernTextarea
-            value={textValue}
-            onChange={(e) => setTextValue(e.target.value)}
-            placeholder="A web app with Next.js, Vercel AI SDK, and shadcn/ui for a task management system"
-            letAIDecide={letAIDecide}
-            onToggleAIDecide={setLetAIDecide}
-            isLoading={isLoading}
-            onSubmit={handleProjectSubmission}
-          />
-        </div>
+      >
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 0.2 }}
+          className="w-full max-w-2xl"
+        >
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.4 }}
+            className="text-center mb-8"
+          >
+            <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text">
+              AI Project Planner
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              Describe your project idea and let AI help you plan and structure it
+            </p>
+          </motion.div>
+
+          {/* Form Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 0.6 }}
+            className="backdrop-blur-xl bg-background/80 border border-border/50 rounded-2xl p-8 shadow-2xl"
+          >
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              transition={{ duration: 0.5, delay: 0.8 }}
+              className="space-y-6"
+            >
+              {/* Project Idea Input */}
+              <div className="space-y-2">
+                <label htmlFor="project-idea" className="text-sm font-medium text-foreground">
+                  Project Idea
+                </label>
+                <Textarea
+                  id="project-idea"
+                  placeholder="Describe your project idea here... (e.g., 'A social media dashboard using React and Node.js' or 'Mobile app for fitness tracking')"
+                  value={projectIdea}
+                  onChange={(e) => setProjectIdea(e.target.value)}
+                  onKeyDown={handleKeyDown}
+                  className="min-h-32 resize-none text-base"
+                  disabled={isLoading}
+                />
+                <p className="text-xs text-muted-foreground">
+                  Press Ctrl/Cmd + Enter to submit quickly
+                </p>
+              </div>
+
+              {/* Let AI Decide Toggle */}
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ duration: 0.5, delay: 1.0 }}
+                className="flex items-center justify-between p-4 rounded-lg bg-accent/5 border border-border/30"
+              >
+                <div className="space-y-1">
+                  <label htmlFor="ai-decide" className="text-sm font-medium text-foreground cursor-pointer">
+                    Let AI Decide Technology Stack
+                  </label>
+                  <p className="text-xs text-muted-foreground">
+                    AI will choose the best technologies for your project
+                  </p>
+                </div>
+                <Switch
+                  id="ai-decide"
+                  checked={letAIDecide}
+                  onCheckedChange={setLetAIDecide}
+                  disabled={isLoading}
+                />
+              </motion.div>
+
+              {/* Submit Button */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 1.2 }}
+              >
+                <Button
+                  onClick={() => submit(projectIdea)}
+                  disabled={!projectIdea.trim() || isLoading}
+                  className="w-full h-12 text-base font-medium"
+                  size="lg"
+                >
+                  {isLoading ? (
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      className="flex items-center gap-2"
+                    >
+                      <Loader2 className="w-4 h-4 animate-spin" />
+                      Analyzing Project...
+                    </motion.div>
+                  ) : (
+                    <motion.span
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                    >
+                      Generate Project Plan
+                    </motion.span>
+                  )}
+                </Button>
+              </motion.div>
+            </motion.div>
+          </motion.div>
+
+          {/* Footer Hint */}
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5, delay: 1.4 }}
+            className="text-center text-sm text-muted-foreground mt-6"
+          >
+            ✨ Powered by AI technology for intelligent project planning
+          </motion.p>
+        </motion.div>
       </motion.div>
     </main>
   );
