@@ -6,162 +6,85 @@ import { ProjectStructureSchema } from '@/lib/schema/let-ai-decide-schema';
 
 export async function POST(req: NextRequest) {
     try {
-        const model = google('gemini-1.5-flash');
+        const model = google('gemini-1.5-flash', {
+            useSearchGrounding: true,
+        });
         const projectIdea = await req.json();
         console.log('Received project idea:', projectIdea);
+
         const result = streamObject({
             model,
             prompt: `
-You are a **Senior Software Architect and Technical Lead** with 15+ years of experience in enterprise software development, startup scaling, and modern web technologies. You have expertise in:
+You are a Senior Software Architect and Technology Advisor. Your primary goal is to help developers choose the RIGHT technology stack and provide a clear roadmap to build their project idea.
 
-- Full-stack development (React, Next.js, Node.js, TypeScript, Python)
-- Cloud architecture (AWS, Azure, GCP, Vercel, Netlify)
-- Database design (PostgreSQL, MongoDB, Redis, Elasticsearch)
-- DevOps and CI/CD (Docker, Kubernetes, GitHub Actions, Jenkins)
-- Security best practices and compliance
-- Performance optimization and scalability
-- Team leadership and project management
+Analyze this project idea: "${projectIdea}"
 
-**PROJECT TO ANALYZE:**
-"${projectIdea}"
+Focus on TECHNOLOGY DECISIONS and IMPLEMENTATION STRATEGY:
 
-**YOUR MISSION:**
-Create a comprehensive, production-ready project plan that includes detailed technical specifications, implementation roadmap, and best practices. This should be a complete guide that a development team can follow from conception to deployment.
+**Basic Information:**
+- Project name and clear description
+- Category: Determine the most appropriate category (e.g., Web App, Mobile App, API, CLI Tool, Desktop App, Game, AI/ML, etc.)
+- Complexity: Simple, Moderate, or Complex
 
-**ANALYSIS FRAMEWORK:**
+**🎯 TECHNOLOGY STACK DECISIONS (PRIMARY FOCUS):**
+For each technology choice, provide detailed analysis:
+- Specific name (e.g., "React", "Node.js", "PostgreSQL")
+- WHY this technology is the best choice (detailed reasoning)
+- Alternative options you considered and why you didn't choose them
+- Difficulty level: Beginner-friendly, Intermediate, or Advanced
+- Key benefits this technology brings to the project
 
-## 1. PROJECT UNDERSTANDING & CATEGORIZATION
-- Analyze the core problem and value proposition
-- Determine project category (Web App, Mobile App, API, etc.)
-- Assess complexity level (Simple, Moderate, Complex, Enterprise)
-- Identify target audience and business requirements
-- Define success metrics and KPIs
+Required technologies:
+- Frontend framework/technology
+- Backend technology
+- Database solution
+- Deployment platform
 
-## 2. TECHNOLOGY STACK DECISIONS
-For each technology choice, provide:
-- **Name & Version**: Specific technology with version when relevant
-- **Reasoning**: Why this technology is the best fit (2-3 sentences)
-- **Alternatives**: 2-3 alternatives that were considered
-- **Learning Curve**: Easy/Moderate/Steep
-- **Popularity**: Low/Medium/High
-- **Setup Instructions**: Step-by-step setup commands
-- **Pros & Cons**: Honest assessment of advantages and disadvantages
+**Architecture:**
+- Architecture pattern (e.g., "MVC", "Microservices", "JAMstack")
+- Detailed description of system design and components
 
-**Technology Categories to Address:**
-- **Frontend**: Framework/library for user interface
-- **Backend**: Server technology and runtime
-- **Database**: Primary data storage solution
-- **Authentication**: User authentication and authorization
-- **Deployment**: Hosting and deployment platform
-- **Testing**: Testing frameworks and tools
-- **Monitoring**: Application monitoring and analytics
-- **CI/CD**: Continuous integration and deployment
-- **Additional**: Supporting tools and services
+**Development Phases:**
+Provide 3-5 key development phases with:
+- Phase name and description of deliverables
 
-**Technology Selection Guidelines:**
-- Prioritize proven, well-maintained technologies
-- Consider ecosystem compatibility and community support
-- Balance cutting-edge features with stability
-- Factor in team expertise and learning curve
-- Consider long-term maintenance and scalability
+**🚀 LEARNING PATH FOR DEVELOPERS:**
+- Prerequisites knowledge needed before starting
+- Recommended study order for the technologies
 
-## 3. ARCHITECTURE & DESIGN PATTERNS
-- Define overall architecture pattern (MVC, Microservices, JAMstack, etc.)
-- Describe system components and their interactions
-- Plan data flow and API structure
-- Design for scalability and maintainability
-- Consider security architecture from the ground up
+**Best Practices & Strategy:**
+- Development best practices specific to chosen technologies
+- Security considerations with recommended tools (e.g., Helmet, bcrypt, Auth0, OWASP guidelines)
+- Testing strategy with specific frameworks (e.g., Jest, Cypress, Playwright, Vitest)
+- Performance optimization with detailed implementation strategies:
+  * Frontend: Code splitting, lazy loading, image optimization, CDN usage
+  * Backend: Database indexing, query optimization, caching strategies (Redis)
+  * Infrastructure: Load balancing, horizontal scaling, monitoring tools
 
-## 4. PROJECT STRUCTURE & SETUP
-Provide detailed file structure including:
-- **Root Files**: package.json, README.md, configuration files
-- **Directories**: src/, components/, pages/, api/, etc.
-- **Key Files**: Important files with their purpose
-- **Setup Commands**: Step-by-step initialization
-- **Environment Variables**: Required env vars with examples
+**📚 OFFICIAL DOCUMENTATION RESOURCES:**
+Search for and provide REAL, current URLs from official documentation sources only.
 
-## 5. DEVELOPMENT PHASES
-Break down into logical phases with:
-- **Phase Name & Description**: Clear phase objectives
-- **Estimated Hours & Days**: Realistic time estimates
-- **Deliverables**: Specific outputs for each phase
-- **Dependencies**: Prerequisites and blockers
-- **Risks**: Potential challenges and mitigation strategies
-- **Milestones**: Key checkpoints and achievements
+Provide up to 6 official documentation resources:
+- Search for official documentation, API references, and getting started guides
+- Include ONLY official documentation URLs from the technology's official websites or repositories
+- Focus on primary documentation sources that developers need to learn the chosen technologies
 
-**Typical phases**: Setup & Foundation, Core Features, UI/UX, Testing, Deployment, Optimization
+For each resource provide:
+- Title: Clear, descriptive name of the official documentation
+- Description: What the documentation covers and why it's essential for the project
+- URL: Real, working URL to official documentation
 
-## 6. SECURITY IMPLEMENTATION
-For each security aspect, provide:
-- **Category**: Authentication, Data Protection, API Security, etc.
-- **Requirements**: Specific security requirements
-- **Tools**: Recommended security tools and libraries
-- **Implementation**: Step-by-step implementation guide
-- **Priority**: Critical/High/Medium/Low
+**🗺️ ENHANCED IMPLEMENTATION ROADMAP:**
+- Getting started: Initial setup and first steps with the chosen technologies
+- Foundation phase: Basic project structure and core infrastructure setup
+- Core development phase: Main feature development using the selected tech stack
+- Integration phase: Connecting components and third-party services
+- Testing phase: Comprehensive testing strategy implementation
+- Deployment phase: Production deployment and monitoring setup
+- Common challenges developers face with this tech stack and solutions
+- Future enhancement possibilities and scaling considerations
 
-**Security areas to cover:**
-- Input validation and sanitization
-- Authentication and authorization
-- Data encryption and protection
-- API security and rate limiting
-- Infrastructure security
-- Compliance considerations
-
-## 7. TESTING STRATEGY
-For each testing type:
-- **Type**: Unit, Integration, E2E, Performance, Security
-- **Tools**: Specific testing frameworks and tools
-- **Coverage**: Target coverage percentages
-- **Strategy**: Testing approach and methodology
-- **Examples**: Sample test cases or scenarios
-
-## 8. PERFORMANCE OPTIMIZATION
-- **Category**: Frontend, Backend, Database, CDN, etc.
-- **Techniques**: Specific optimization techniques
-- **Tools**: Performance monitoring and optimization tools
-- **Metrics**: Key performance indicators to track
-- **Implementation**: How to implement optimizations
-
-## 9. DEPLOYMENT CONFIGURATION
-- **Platform**: Specific deployment platform
-- **Type**: Static/Server/Serverless/Container
-- **Requirements**: System and infrastructure requirements
-- **Steps**: Detailed deployment steps
-- **Environment**: Environment-specific configurations
-- **Monitoring**: Deployment monitoring and rollback strategies
-
-## 10. LEARNING RESOURCES
-Organize resources by difficulty and type:
-- **Essential**: Must-have resources for getting started
-- **Recommended**: Additional helpful resources
-- **Advanced**: Deep-dive materials for mastery
-- **Tools**: Development tools and utilities
-
-For each resource:
-- **Title**: Resource name
-- **Type**: Documentation/Tutorial/Course/Book/Video/Article/Tool
-- **URL**: Direct link when available
-- **Description**: What the resource covers
-- **Difficulty**: Beginner/Intermediate/Advanced
-- **Estimated Time**: Time investment required
-- **Is Free**: Whether the resource is free
-
-## 11. IMPLEMENTATION ROADMAP
-- **Prerequisites**: What needs to be in place before starting
-- **Quick Start**: Steps to get a basic version running quickly
-- **Milestones**: Major project milestones with timeframes
-- **Future Enhancements**: Ideas for future iterations and improvements
-
-**OUTPUT REQUIREMENTS:**
-
-1. **Be Specific and Actionable**: Provide exact commands, file names, and configurations
-2. **Include Real-World Considerations**: Factor in team size, budget, timeline constraints
-3. **Provide Comprehensive Coverage**: Address all aspects of software development lifecycle
-4. **Use Current Best Practices**: Reference 2024-2025 standards and technologies
-5. **Include Quantitative Data**: Specific hours, percentages, metrics where relevant
-6. **Consider Scalability**: Plan for growth from MVP to enterprise scale
-
-Create a plan that demonstrates deep technical expertise while being immediately actionable for a development team. Focus on modern, production-ready solutions that will scale effectively.`,
+Make this a comprehensive TECHNOLOGY ADVISOR that helps developers make informed decisions and provides a clear path from idea to implementation.`,
             schema: ProjectStructureSchema,
             onError({ error }) {
                 console.error(error);

@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { experimental_useObject as useObject } from '@ai-sdk/react';
 import { ProjectStructureSchema } from '@/lib/schema/let-ai-decide-schema';
-import { ProjectResult } from "@/components/project-result/ProjectResult";
 
 
 export default function Home() {
@@ -153,35 +152,6 @@ export default function Home() {
           transition={{ duration: 0.6 }}
           className="py-8"
         >
-          <div className="mb-6 text-center">
-            <Button
-              onClick={() => {
-                // Reset the form to generate a new project
-                setProjectIdea("");
-                // The object will be cleared automatically by useObject
-              }}
-              variant="outline"
-              className="mb-4"
-            >
-              Generate New Project
-            </Button>
-          </div>
-          <ProjectResult
-            projectName={object?.projectName}
-            description={object?.description}
-            tagline={object?.tagline}
-            category={object?.category}
-            projectMetadata={object?.projectMetadata}
-            techStack={object?.techStack}
-            architecture={object?.architecture}
-            developmentPhases={object?.developmentPhases}
-            projectStructure={object?.projectStructure}
-            recommendations={object?.recommendations}
-            security={object?.security}
-            testing={object?.testing}
-            learningResources={object?.learningResources}
-            roadmap={object?.roadmap}
-          />
         </motion.div>
       )}
     </main>
