@@ -39,6 +39,9 @@ const ProjectContextSchema = z.object({
 });
 
 export const ProjectStructureSchema = z.object({
+    // Unique identifier for the generated project plan
+    id: z.string(),
+
     // Basic project information
     projectName: z.string(),
     description: z.string(),
