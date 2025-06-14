@@ -6,7 +6,7 @@ import { ProjectStructureSchema } from '@/lib/schema/let-ai-decide-schema';
 
 export async function POST(req: NextRequest) {
     try {
-        const model = google('gemini-1.5-flash', {
+        const model = google('gemini-2.0-flash', {
             useSearchGrounding: true,
         });
         const projectIdea = await req.json();
@@ -25,24 +25,36 @@ Focus on TECHNOLOGY DECISIONS and IMPLEMENTATION STRATEGY:
 - Project name and clear description
 - Category: Determine the most appropriate category (e.g., Web App, Mobile App, API, CLI Tool, Desktop App, Game, AI/ML, etc.)
 - Complexity: Simple, Moderate, or Complex
+- Analyze the project context: team size, developer experience levels, project timeline, and budget constraints
 
 **🎯 TECHNOLOGY STACK DECISIONS (PRIMARY FOCUS):**
 For each technology choice, provide detailed analysis:
-- Specific name (e.g., "React", "Node.js", "PostgreSQL")
+- Specific name (e.g., "React", "Node.js", "PostgreSQL", "LangChain")
 - WHY this technology is the best choice (detailed reasoning)
 - Alternative options you considered and why you didn't choose them
 - Difficulty level: Beginner-friendly, Intermediate, or Advanced
 - Key benefits this technology brings to the project
+- Community support and ecosystem health (active development, updates frequency)
+- Cost implications (free/open-source, paid licensing, infrastructure costs)
+
+For AI integration specifically:
+- If the project explicitly requires AI features, recommend the most suitable AI technology stack
+- If AI is not explicitly mentioned, critically evaluate whether AI would truly enhance the project or if simpler solutions would be more appropriate
+- Recommend specific AI technologies only if they truly add value (not just because they're trendy)
+- Use search grounding to find current, relevant information about AI frameworks like LangGraph, CrewAI, Google AI SDK, LangChain, HuggingFace Transformers, Vercel AI SDK, etc.
+- Consider factors like ease of integration, community support, and specific capabilities needed
 
 Required technologies:
 - Frontend framework/technology
 - Backend technology
 - Database solution
 - Deployment platform
+- AI integration technology (evaluate whether AI is needed for the project, and recommend appropriate AI technologies like LangGraph, CrewAI, Google AI SDK, etc. - leverage search grounding to find up-to-date information on these technologies)
 
 **Architecture:**
 - Architecture pattern (e.g., "MVC", "Microservices", "JAMstack")
 - Detailed description of system design and components
+- Integration strategy with existing systems or third-party services (if applicable)
 
 **Development Phases:**
 Provide 3-5 key development phases with:
@@ -51,6 +63,7 @@ Provide 3-5 key development phases with:
 **🚀 LEARNING PATH FOR DEVELOPERS:**
 - Prerequisites knowledge needed before starting
 - Recommended study order for the technologies
+- Estimated learning curve based on the team's experience level
 
 **Best Practices & Strategy:**
 - Development best practices specific to chosen technologies
@@ -60,6 +73,11 @@ Provide 3-5 key development phases with:
   * Frontend: Code splitting, lazy loading, image optimization, CDN usage
   * Backend: Database indexing, query optimization, caching strategies (Redis)
   * Infrastructure: Load balancing, horizontal scaling, monitoring tools
+
+**Risk Assessment:**
+- Identify 2-3 key technical risks associated with the recommended stack
+- For each risk, suggest a practical mitigation strategy
+- Consider scalability challenges, performance bottlenecks, security concerns
 
 **📚 OFFICIAL DOCUMENTATION RESOURCES:**
 Search for and provide REAL, current URLs from official documentation sources only.
