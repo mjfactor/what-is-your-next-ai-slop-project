@@ -6,7 +6,6 @@ import { Separator } from "@/components/ui/separator"
 import { authClient } from "@/lib/auth-client"
 import { Github } from "lucide-react"
 import { useState } from "react"
-import { useRouter } from "next/navigation";
 const GoogleIcon = () => (
     <svg className="size-4" viewBox="0 0 24 24" aria-hidden="true">
         <path
@@ -29,7 +28,6 @@ const GoogleIcon = () => (
 )
 
 export default function AuthPage() {
-    const router = useRouter()
     const [isGoogleLoading, setIsGoogleLoading] = useState(false)
     const [isGithubLoading, setIsGithubLoading] = useState(false)
 
@@ -39,7 +37,6 @@ export default function AuthPage() {
             await authClient.signIn.social({
                 provider: "google",
             })
-            router.push('/')
         } catch (error) {
             console.error("Google sign-in error:", error)
         } finally {
