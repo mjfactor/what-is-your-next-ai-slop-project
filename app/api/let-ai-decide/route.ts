@@ -39,7 +39,7 @@ export async function POST(req: NextRequest) {
         // Generate UUID upfront so we can include it in the response
         const generatedId = randomUUID();
 
-        const model = google('gemini-2.0-flash', {
+        const model = google('gemini-2.5-flash-preview-04-17', {
             useSearchGrounding: true,
         });
 
@@ -152,15 +152,21 @@ For each resource provide:
 - Description: What the documentation covers and why it's essential for the project
 - URL: Real, working URL to official documentation
 
-**🗺️ ENHANCED IMPLEMENTATION ROADMAP:**
-- Getting started: Initial setup and first steps with the chosen technologies
-- Foundation phase: Basic project structure and core infrastructure setup
-- Core development phase: Main feature development using the selected tech stack
-- Integration phase: Connecting components and third-party services
-- Testing phase: Comprehensive testing strategy implementation
-- Deployment phase: Production deployment and monitoring setup
-- Common challenges developers face with this tech stack and solutions
-- Future enhancement possibilities and scaling considerations
+**🗺️ IMPLEMENTATION ROADMAP:**
+Provide a practical, actionable roadmap with two sections:
+
+**Must Do (Essential Steps):**
+- Provide 8-10 step-by-step instructions that developers must follow to build the core project
+- Each step should be specific and actionable, starting with "Step X:" 
+- Include exact commands where applicable (e.g., "Step 1: Install Next.js using \`npx create-next-app@latest project-name --typescript --tailwind\`")
+- Cover the complete workflow from project setup to basic deployment
+- Focus on getting a working MVP (Minimum Viable Product)
+
+**Optional (Enhancements):**
+- Provide 6-8 optional features and improvements developers can add later
+- Each should describe a valuable enhancement that builds upon the core functionality
+- Focus on features like authentication, advanced functionality, performance optimizations, analytics, etc.
+- These should be practical additions that improve the project's capabilities
 
 Make this a comprehensive TECHNOLOGY ADVISOR that helps developers make informed decisions and provides a clear path from idea to implementation.`,
             schema: ProjectStructureSchema,

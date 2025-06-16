@@ -86,18 +86,10 @@ export const ProjectStructureSchema = z.object({
     risks: z.array(RiskSchema).max(3).optional(),
 
     // Learning resources
-    resources: z.array(ResourceSchema).max(6),
-
-    // Enhanced implementation roadmap
+    resources: z.array(ResourceSchema).max(6),    // Simplified implementation roadmap
     roadmap: z.object({
-        gettingStarted: z.string(),
-        foundationPhase: z.string(),
-        coreDevPhase: z.string(),
-        integrationPhase: z.string(),
-        testingPhase: z.string(),
-        deploymentPhase: z.string(),
-        commonChallenges: z.string(),
-        futureEnhancements: z.string()
+        mustDo: z.array(z.string()).max(10), // Step-by-step essential tasks
+        optional: z.array(z.string()).max(8)  // Optional enhancements and improvements
     })
 });
 

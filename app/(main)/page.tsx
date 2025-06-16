@@ -9,6 +9,7 @@ import { experimental_useObject as useObject } from '@ai-sdk/react';
 import { ProjectStructureSchema } from '@/lib/schema/let-ai-decide-schema';
 import { useRouter } from "next/navigation";
 
+
 export default function Home() {
   const router = useRouter();
   const [projectIdea, setProjectIdea] = useState("");
@@ -36,14 +37,15 @@ export default function Home() {
       e.preventDefault();
       handleSubmit();
     }
-  };
-
-  return (
+  }; return (
     <main className="relative min-h-screen bg-background overflow-hidden">
       {/* Animated Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse delay-1000" />
+
+      {/* User Profile Component */}
+      
 
       {/* Main Content */}
       <motion.div
@@ -51,8 +53,7 @@ export default function Home() {
         animate={{ opacity: 1 }}
         transition={{ duration: 1 }}
         className="flex items-center justify-center min-h-screen py-12"
-      >
-        <div className="w-full max-w-5xl px-4">
+      ><div className="w-full max-w-5xl px-4">
           <AnimatePresence mode="wait">
             <motion.div
               key="input"
