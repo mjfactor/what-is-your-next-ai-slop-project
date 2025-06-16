@@ -156,7 +156,7 @@ For each resource provide:
 Provide a practical, actionable roadmap with two sections:
 
 **Must Do (Essential Steps):**
-- Provide 8-10 step-by-step instructions that developers must follow to build the core project
+- Provide at least 10-12 step-by-step instructions that developers must follow to build the core project
 - Each step should be specific and actionable, starting with "Step X:" 
 - Include exact commands where applicable (e.g., "Step 1: Install Next.js using \`npx create-next-app@latest project-name --typescript --tailwind\`")
 - Cover the complete workflow from project setup to basic deployment

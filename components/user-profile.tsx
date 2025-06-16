@@ -11,7 +11,7 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { LogOut, User } from "lucide-react";
+import { LogOut, History, Home } from "lucide-react";
 import { useSession, signOut } from "@/lib/auth-client";
 import { useRouter } from 'next/navigation'
 const UserProfile = () => {
@@ -19,10 +19,8 @@ const UserProfile = () => {
     const Router = useRouter();
     const handleSignOut = async () => {
         await signOut();
-        Router.push('/auth'); // Redirect to auth page   after sign out
-
+        Router.push('/auth');
     };
-
     const getInitials = (name: string) => {
         return name
             .split(' ')
@@ -31,7 +29,6 @@ const UserProfile = () => {
             .toUpperCase()
             .slice(0, 2);
     };
-
     // Don't render anything if no session and not loading
     if (!session?.user && !isPending) {
         return null;
@@ -107,6 +104,21 @@ const UserProfile = () => {
                                 </div>
                             </DropdownMenuLabel>
                             <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                                onClick={() => Router.push('/')}
+                            >
+                                <Home className="mr-2 h-4 w-4" />
+                                <span>Generate</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem
+                                onClick={() => Router.push('/history')}
+                            >
+                                <History className="mr-2 h-4 w-4" />
+                                <span>History</span>
+                            </DropdownMenuItem>
+                            <DropdownMenuSeparator />
+
                             <DropdownMenuItem
                                 className="cursor-pointer text-red-600 focus:text-red-600 dark:text-red-400 dark:focus:text-red-400"
                                 onClick={handleSignOut}

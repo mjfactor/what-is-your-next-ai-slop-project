@@ -88,7 +88,7 @@ export const ProjectStructureSchema = z.object({
     // Learning resources
     resources: z.array(ResourceSchema).max(6),    // Simplified implementation roadmap
     roadmap: z.object({
-        mustDo: z.array(z.string()).max(10), // Step-by-step essential tasks
+        mustDo: z.array(z.string()).min(10).max(20), // Step-by-step essential tasks
         optional: z.array(z.string()).max(8)  // Optional enhancements and improvements
     })
 });
