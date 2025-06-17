@@ -29,6 +29,8 @@ const db = new Kysely<Database>({
     }),
 });
 
+export const runtime = 'edge';
+
 export async function POST(req: NextRequest) {
     try {
         // Get the current user session

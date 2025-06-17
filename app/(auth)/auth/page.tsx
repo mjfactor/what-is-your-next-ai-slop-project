@@ -105,10 +105,6 @@ export default function AuthPage() {
                         )}
                         Continue with GitHub
                     </Button>
-
-                    <div className="text-center text-sm text-muted-foreground">
-                        By continuing, you agree to our Terms of Service and Privacy Policy.
-                    </div>
                 </CardContent>
             </Card>
         </div>
