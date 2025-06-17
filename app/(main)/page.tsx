@@ -17,7 +17,7 @@ export default function Home() {
   const [projectIdea, setProjectIdea] = useState("");
   const [isValidating, setIsValidating] = useState(false);
   const { submit, isLoading, stop } = useObject({
-    api: '/api/let-ai-decide',
+    api: '/api/generate',
     schema: ProjectStructureSchema,
     onFinish: ({ object, error }) => {
       if (error) {
@@ -123,16 +123,16 @@ export default function Home() {
                   className="space-y-6"
                 >
                   {/* Project Idea Input */}
-                  <div className="space-y-2">                    
+                  <div className="space-y-2">
                     <Textarea
-                    id="project-idea"
-                    placeholder="Describe your project idea here... (e.g., 'A social media dashboard using React and Node.js' or 'Mobile app for fitness tracking')"
-                    value={projectIdea}
-                    onChange={(e) => setProjectIdea(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    className="min-h-32 resize-none text-base"
-                    disabled={isLoading || isValidating}
-                  />
+                      id="project-idea"
+                      placeholder="Describe your project idea here... (e.g., 'A social media dashboard using React and Node.js' or 'Mobile app for fitness tracking')"
+                      value={projectIdea}
+                      onChange={(e) => setProjectIdea(e.target.value)}
+                      onKeyDown={handleKeyDown}
+                      className="min-h-32 resize-none text-base"
+                      disabled={isLoading || isValidating}
+                    />
                   </div>                  {/* Submit Button */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}

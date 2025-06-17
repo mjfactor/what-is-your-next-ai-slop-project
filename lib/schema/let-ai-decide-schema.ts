@@ -34,8 +34,7 @@ const RiskSchema = z.object({
 // Project context information
 const ProjectContextSchema = z.object({
     teamSize: z.enum(['Solo developer', 'Small team (2-5)', 'Medium team (6-15)', 'Large team (15+)']),
-    experienceLevel: z.enum(['Beginner', 'Intermediate', 'Advanced']),
-    timeline: z.string()
+    experienceLevel: z.enum(['Beginner', 'Intermediate', 'Advanced'])
 });
 
 export const ProjectStructureSchema = z.object({

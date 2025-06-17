@@ -2,13 +2,14 @@
 
 import React, { useState, useEffect } from 'react'
 import { useParams } from "next/navigation";
+import { motion } from "framer-motion";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Button } from "@/components/ui/button";
-import { Clock, Users, Code, Zap, Shield, TestTube, AlertTriangle, ExternalLink, ChevronRight } from "lucide-react";
+import { Users, Code, Zap, Shield, TestTube, AlertTriangle, ExternalLink, ChevronRight } from "lucide-react";
 
 // TypeScript interfaces
 interface TechStackItem {
@@ -41,7 +42,6 @@ interface Resource {
 interface ProjectContext {
     teamSize: string;
     experienceLevel: string;
-    timeline: string;
 }
 
 interface Architecture {
@@ -264,22 +264,47 @@ export default function ProjectDetailPage() {
         );
     }
 
-    const { generated_content: content } = project;
-
-    return (
+    const { generated_content: content } = project; return (
         <main className="container mx-auto px-4 py-8 max-w-7xl">
-            <div className="space-y-8">
+            <motion.div
+                className="space-y-8"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ duration: 0.5 }}
+            >
                 {/* Header Section */}
-                <div className="space-y-6">
+                <motion.div
+                    className="space-y-6"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.1 }}
+                >
                     <div className="space-y-4">
                         <div className="space-y-2">
-                            <h1 className="text-4xl font-bold tracking-tight">{content.projectName}</h1>
-                            <p className="text-xl text-muted-foreground leading-relaxed">
+                            <motion.h1
+                                className="text-4xl font-bold tracking-tight"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6, delay: 0.2 }}
+                            >
+                                {content.projectName}
+                            </motion.h1>
+                            <motion.p
+                                className="text-xl text-muted-foreground leading-relaxed"
+                                initial={{ opacity: 0, y: 20 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.6, delay: 0.3 }}
+                            >
                                 {content.description}
-                            </p>
+                            </motion.p>
                         </div>
 
-                        <div className="flex flex-wrap gap-2">
+                        <motion.div
+                            className="flex flex-wrap gap-2"
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.6, delay: 0.4 }}
+                        >
                             <Badge variant="default" className="px-3 py-1">
                                 {content.category}
                             </Badge>
@@ -290,324 +315,330 @@ export default function ProjectDetailPage() {
                                 <Badge variant="secondary" className="px-3 py-1">
                                     Idea: {project.project_idea}
                                 </Badge>
-                            )}
-                        </div>
+                            )}                        </motion.div>
                     </div>
 
                     {/* Context Cards */}
-                    <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                        <Card>
-                            <CardHeader className="pb-3">
-                                <div className="flex items-center gap-2">
-                                    <Users className="h-5 w-5 text-primary" />
-                                    <CardTitle className="text-base">Team Size</CardTitle>
-                                </div>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-2xl font-semibold">{content.context.teamSize}</p>
-                            </CardContent>
-                        </Card>
-
-                        <Card>
-                            <CardHeader className="pb-3">
-                                <div className="flex items-center gap-2">
-                                    <Clock className="h-5 w-5 text-primary" />
-                                    <CardTitle className="text-base">Timeline</CardTitle>
-                                </div>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-2xl font-semibold">{content.context.timeline}</p>
-                            </CardContent>
-                        </Card>
-
-                        <Card>
-                            <CardHeader className="pb-3">
-                                <div className="flex items-center gap-2">
-                                    <Code className="h-5 w-5 text-primary" />
-                                    <CardTitle className="text-base">Experience Level</CardTitle>
-                                </div>
-                            </CardHeader>
-                            <CardContent>
-                                <p className="text-2xl font-semibold">{content.context.experienceLevel}</p>
-                            </CardContent>
-                        </Card>
-                    </div>
-                </div>
-
-                {/* Main Content Tabs */}
-                <Tabs defaultValue="overview" className="space-y-6">
-                    <TabsList className="grid w-full grid-cols-2 md:grid-cols-6">
-                        <TabsTrigger value="overview">Overview</TabsTrigger>
-                        <TabsTrigger value="techstack">Tech Stack</TabsTrigger>
-                        <TabsTrigger value="roadmap">Roadmap</TabsTrigger>
-                        <TabsTrigger value="learning">Learning</TabsTrigger>
-                        <TabsTrigger value="risks">Risks</TabsTrigger>
-                        <TabsTrigger value="resources">Resources</TabsTrigger>
-                    </TabsList>
-
-                    {/* Overview Tab */}
-                    <TabsContent value="overview" className="space-y-6">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    <motion.div
+                        className="grid grid-cols-1 md:grid-cols-2 gap-4"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.6, delay: 0.5 }}
+                    >
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.5, delay: 0.6 }}
+                        >
                             <Card>
-                                <CardHeader>
-                                    <CardTitle className="flex items-center gap-2">
-                                        <Code className="h-5 w-5" />
-                                        Architecture
-                                    </CardTitle>
-                                </CardHeader>
-                                <CardContent className="space-y-4">
-                                    <div>
-                                        <Badge variant="outline" className="mb-2">
-                                            {content.architecture.pattern}
-                                        </Badge>
-                                        <p className="text-sm text-muted-foreground">
-                                            {content.architecture.description}
-                                        </p>
+                                <CardHeader className="pb-3">
+                                    <div className="flex items-center gap-2">
+                                        <Users className="h-5 w-5 text-primary" />
+                                        <CardTitle className="text-base">Team Size</CardTitle>
                                     </div>
-                                    {content.architecture.integrationStrategy && (
-                                        <div>
-                                            <h4 className="font-medium mb-1">Integration Strategy</h4>
-                                            <p className="text-sm text-muted-foreground">
-                                                {content.architecture.integrationStrategy}
-                                            </p>
-                                        </div>
-                                    )}
-                                </CardContent>
-                            </Card>
-
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle className="flex items-center gap-2">
-                                        <Shield className="h-5 w-5" />
-                                        Best Practices
-                                    </CardTitle>
                                 </CardHeader>
                                 <CardContent>
-                                    <p className="text-sm text-muted-foreground leading-relaxed">
-                                        {content.bestPractices}
-                                    </p>
+                                    <p className="text-2xl font-semibold">{content.context.teamSize}</p>
                                 </CardContent>
                             </Card>
-                        </div>
+                        </motion.div>
 
-                        <Accordion type="single" collapsible className="space-y-2">
-                            <AccordionItem value="security">
-                                <AccordionTrigger className="text-left">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            transition={{ duration: 0.5, delay: 0.7 }}
+                        >
+                            <Card>
+                                <CardHeader className="pb-3">
                                     <div className="flex items-center gap-2">
-                                        <Shield className="h-4 w-4" />
-                                        Security Considerations
+                                        <Code className="h-5 w-5 text-primary" />
+                                        <CardTitle className="text-base">Experience Level</CardTitle>
                                     </div>
-                                </AccordionTrigger>
-                                <AccordionContent>
-                                    <p className="text-sm text-muted-foreground leading-relaxed">
-                                        {content.security}
-                                    </p>
-                                </AccordionContent>
-                            </AccordionItem>
+                                </CardHeader>
+                                <CardContent>
+                                    <p className="text-2xl font-semibold">{content.context.experienceLevel}</p>
+                                </CardContent>
+                            </Card>
+                        </motion.div>
+                    </motion.div>
+                </motion.div>                {/* Main Content Tabs */}
+                <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.8 }}
+                >
+                    <Tabs defaultValue="overview" className="space-y-6">
+                        <TabsList className="grid w-full grid-cols-2 md:grid-cols-6">
+                            <TabsTrigger value="overview">Overview</TabsTrigger>
+                            <TabsTrigger value="techstack">Tech Stack</TabsTrigger>
+                            <TabsTrigger value="roadmap">Roadmap</TabsTrigger>
+                            <TabsTrigger value="learning">Learning</TabsTrigger>
+                            <TabsTrigger value="risks">Risks</TabsTrigger>
+                            <TabsTrigger value="resources">Resources</TabsTrigger>
+                        </TabsList>
 
-                            <AccordionItem value="testing">
-                                <AccordionTrigger className="text-left">
-                                    <div className="flex items-center gap-2">
-                                        <TestTube className="h-4 w-4" />
-                                        Testing Strategy
-                                    </div>
-                                </AccordionTrigger>
-                                <AccordionContent>
-                                    <p className="text-sm text-muted-foreground leading-relaxed">
-                                        {content.testing}
-                                    </p>
-                                </AccordionContent>
-                            </AccordionItem>
-
-                            <AccordionItem value="performance">
-                                <AccordionTrigger className="text-left">
-                                    <div className="flex items-center gap-2">
-                                        <Zap className="h-4 w-4" />
-                                        Performance Optimization
-                                    </div>
-                                </AccordionTrigger>
-                                <AccordionContent>
-                                    <p className="text-sm text-muted-foreground leading-relaxed">
-                                        {content.performance}
-                                    </p>
-                                </AccordionContent>
-                            </AccordionItem>
-                        </Accordion>
-                    </TabsContent>
-
-                    {/* Tech Stack Tab */}
-                    <TabsContent value="techstack" className="space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                            {Object.entries(content.techStack).map(([key, item]) => {
-                                if (!item) return null;
-                                return (
-                                    <TechStackCard
-                                        key={key}
-                                        title={key.charAt(0).toUpperCase() + key.slice(1)}
-                                        item={item}
-                                    />
-                                );
-                            })}
-                        </div>
-                    </TabsContent>
-
-                    {/* Roadmap Tab */}
-                    <TabsContent value="roadmap" className="space-y-6">
-                        <Card>
-                            <CardHeader>
-                                <CardTitle>Development Phases</CardTitle>
-                                <CardDescription>
-                                    Step-by-step roadmap for building your project
-                                </CardDescription>
-                            </CardHeader>
-                            <CardContent>
-                                <div className="space-y-4">
-                                    {content.phases.map((phase, index) => (
-                                        <div key={index} className="flex gap-4">
-                                            <div className="flex flex-col items-center">
-                                                <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
-                                                    {index + 1}
-                                                </div>
-                                                {index < content.phases.length - 1 && (
-                                                    <div className="w-px h-12 bg-border mt-2" />
-                                                )}
-                                            </div>
-                                            <div className="flex-1 pb-8">
-                                                {phase.name && (
-                                                    <h4 className="font-medium mb-1">{phase.name}</h4>
-                                                )}
+                        {/* Overview Tab */}
+                        <TabsContent value="overview" className="space-y-6">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle className="flex items-center gap-2">
+                                            <Code className="h-5 w-5" />
+                                            Architecture
+                                        </CardTitle>
+                                    </CardHeader>
+                                    <CardContent className="space-y-4">
+                                        <div>
+                                            <Badge variant="outline" className="mb-2">
+                                                {content.architecture.pattern}
+                                            </Badge>
+                                            <p className="text-sm text-muted-foreground">
+                                                {content.architecture.description}
+                                            </p>
+                                        </div>
+                                        {content.architecture.integrationStrategy && (
+                                            <div>
+                                                <h4 className="font-medium mb-1">Integration Strategy</h4>
                                                 <p className="text-sm text-muted-foreground">
-                                                    {phase.description}
+                                                    {content.architecture.integrationStrategy}
                                                 </p>
                                             </div>
-                                        </div>
-                                    ))}
-                                </div>
-                            </CardContent>
-                        </Card>
-
-                        {content.roadmap && (content.roadmap.mustDo || content.roadmap.optional) && (
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                                {content.roadmap.mustDo && (
-                                    <Card>
-                                        <CardHeader>
-                                            <CardTitle className="text-lg">Must Do</CardTitle>
-                                            <CardDescription>Essential tasks for project completion</CardDescription>
-                                        </CardHeader>
-                                        <CardContent>
-                                            <ul className="space-y-2">
-                                                {content.roadmap.mustDo.map((item, index) => (
-                                                    <li key={index} className="flex items-start gap-2 text-sm">
-                                                        <ChevronRight className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
-                                                        {item}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </CardContent>
-                                    </Card>
-                                )}
-
-                                {content.roadmap.optional && (
-                                    <Card>
-                                        <CardHeader>
-                                            <CardTitle className="text-lg">Optional</CardTitle>
-                                            <CardDescription>Additional features and enhancements</CardDescription>
-                                        </CardHeader>
-                                        <CardContent>
-                                            <ul className="space-y-2">
-                                                {content.roadmap.optional.map((item, index) => (
-                                                    <li key={index} className="flex items-start gap-2 text-sm">
-                                                        <ChevronRight className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
-                                                        {item}
-                                                    </li>
-                                                ))}
-                                            </ul>
-                                        </CardContent>
-                                    </Card>
-                                )}
-                            </div>
-                        )}
-                    </TabsContent>
-
-                    {/* Learning Tab */}
-                    <TabsContent value="learning" className="space-y-6">
-                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Prerequisites</CardTitle>
-                                    <CardDescription>What you need to know before starting</CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-sm text-muted-foreground leading-relaxed">
-                                        {content.learningPath.prerequisites}
-                                    </p>
-                                </CardContent>
-                            </Card>
-
-                            <Card>
-                                <CardHeader>
-                                    <CardTitle>Study Order</CardTitle>
-                                    <CardDescription>Recommended learning sequence</CardDescription>
-                                </CardHeader>
-                                <CardContent>
-                                    <p className="text-sm text-muted-foreground leading-relaxed">
-                                        {content.learningPath.studyOrder}
-                                    </p>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </TabsContent>
-
-                    {/* Risks Tab */}
-                    <TabsContent value="risks" className="space-y-6">
-                        <div className="space-y-4">
-                            {content.risks.map((risk, index) => (
-                                <RiskCard key={index} risk={risk} index={index} />
-                            ))}
-                        </div>
-                    </TabsContent>
-
-                    {/* Resources Tab */}
-                    <TabsContent value="resources" className="space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            {content.resources.map((resource, index) => (
-                                <Card key={index} className="group hover:shadow-md transition-shadow">
-                                    <CardHeader className="pb-3">
-                                        <div className="flex items-start justify-between">
-                                            <CardTitle className="text-base leading-tight">
-                                                {resource.title || `Resource ${index + 1}`}
-                                            </CardTitle>
-                                            {resource.url && (
-                                                <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-                                            )}
-                                        </div>
-                                    </CardHeader>
-                                    <CardContent className="space-y-3">
-                                        {resource.description && (
-                                            <p className="text-sm text-muted-foreground leading-relaxed">
-                                                {resource.description}
-                                            </p>
-                                        )}
-                                        {resource.url && (
-                                            <Button variant="outline" size="sm" className="w-full" asChild>
-                                                <a
-                                                    href={resource.url}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="flex items-center gap-2"
-                                                >
-                                                    Visit Resource
-                                                    <ExternalLink className="h-3 w-3" />
-                                                </a>
-                                            </Button>
                                         )}
                                     </CardContent>
                                 </Card>
-                            ))}
-                        </div>
-                    </TabsContent>
-                </Tabs>
-            </div>
+
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle className="flex items-center gap-2">
+                                            <Shield className="h-5 w-5" />
+                                            Best Practices
+                                        </CardTitle>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <p className="text-sm text-muted-foreground leading-relaxed">
+                                            {content.bestPractices}
+                                        </p>
+                                    </CardContent>
+                                </Card>
+                            </div>
+
+                            <Accordion type="single" collapsible className="space-y-2">
+                                <AccordionItem value="security">
+                                    <AccordionTrigger className="text-left">
+                                        <div className="flex items-center gap-2">
+                                            <Shield className="h-4 w-4" />
+                                            Security Considerations
+                                        </div>
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+                                        <p className="text-sm text-muted-foreground leading-relaxed">
+                                            {content.security}
+                                        </p>
+                                    </AccordionContent>
+                                </AccordionItem>
+
+                                <AccordionItem value="testing">
+                                    <AccordionTrigger className="text-left">
+                                        <div className="flex items-center gap-2">
+                                            <TestTube className="h-4 w-4" />
+                                            Testing Strategy
+                                        </div>
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+                                        <p className="text-sm text-muted-foreground leading-relaxed">
+                                            {content.testing}
+                                        </p>
+                                    </AccordionContent>
+                                </AccordionItem>
+
+                                <AccordionItem value="performance">
+                                    <AccordionTrigger className="text-left">
+                                        <div className="flex items-center gap-2">
+                                            <Zap className="h-4 w-4" />
+                                            Performance Optimization
+                                        </div>
+                                    </AccordionTrigger>
+                                    <AccordionContent>
+                                        <p className="text-sm text-muted-foreground leading-relaxed">
+                                            {content.performance}
+                                        </p>
+                                    </AccordionContent>
+                                </AccordionItem>
+                            </Accordion>
+                        </TabsContent>
+
+                        {/* Tech Stack Tab */}
+                        <TabsContent value="techstack" className="space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {Object.entries(content.techStack).map(([key, item]) => {
+                                    if (!item) return null;
+                                    return (
+                                        <TechStackCard
+                                            key={key}
+                                            title={key.charAt(0).toUpperCase() + key.slice(1)}
+                                            item={item}
+                                        />
+                                    );
+                                })}
+                            </div>
+                        </TabsContent>
+
+                        {/* Roadmap Tab */}
+                        <TabsContent value="roadmap" className="space-y-6">
+                            <Card>
+                                <CardHeader>
+                                    <CardTitle>Development Phases</CardTitle>
+                                    <CardDescription>
+                                        Step-by-step roadmap for building your project
+                                    </CardDescription>
+                                </CardHeader>
+                                <CardContent>
+                                    <div className="space-y-4">
+                                        {content.phases.map((phase, index) => (
+                                            <div key={index} className="flex gap-4">
+                                                <div className="flex flex-col items-center">
+                                                    <div className="w-8 h-8 rounded-full bg-primary text-primary-foreground flex items-center justify-center text-sm font-medium">
+                                                        {index + 1}
+                                                    </div>
+                                                    {index < content.phases.length - 1 && (
+                                                        <div className="w-px h-12 bg-border mt-2" />
+                                                    )}
+                                                </div>
+                                                <div className="flex-1 pb-8">
+                                                    {phase.name && (
+                                                        <h4 className="font-medium mb-1">{phase.name}</h4>
+                                                    )}
+                                                    <p className="text-sm text-muted-foreground">
+                                                        {phase.description}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </CardContent>
+                            </Card>
+
+                            {content.roadmap && (content.roadmap.mustDo || content.roadmap.optional) && (
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                    {content.roadmap.mustDo && (
+                                        <Card>
+                                            <CardHeader>
+                                                <CardTitle className="text-lg">Must Do</CardTitle>
+                                                <CardDescription>Essential tasks for project completion</CardDescription>
+                                            </CardHeader>
+                                            <CardContent>
+                                                <ul className="space-y-2">
+                                                    {content.roadmap.mustDo.map((item, index) => (
+                                                        <li key={index} className="flex items-start gap-2 text-sm">
+                                                            <ChevronRight className="h-4 w-4 text-primary mt-0.5 flex-shrink-0" />
+                                                            {item}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </CardContent>
+                                        </Card>
+                                    )}
+
+                                    {content.roadmap.optional && (
+                                        <Card>
+                                            <CardHeader>
+                                                <CardTitle className="text-lg">Optional</CardTitle>
+                                                <CardDescription>Additional features and enhancements</CardDescription>
+                                            </CardHeader>
+                                            <CardContent>
+                                                <ul className="space-y-2">
+                                                    {content.roadmap.optional.map((item, index) => (
+                                                        <li key={index} className="flex items-start gap-2 text-sm">
+                                                            <ChevronRight className="h-4 w-4 text-muted-foreground mt-0.5 flex-shrink-0" />
+                                                            {item}
+                                                        </li>
+                                                    ))}
+                                                </ul>
+                                            </CardContent>
+                                        </Card>
+                                    )}
+                                </div>
+                            )}
+                        </TabsContent>
+
+                        {/* Learning Tab */}
+                        <TabsContent value="learning" className="space-y-6">
+                            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Prerequisites</CardTitle>
+                                        <CardDescription>What you need to know before starting</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <p className="text-sm text-muted-foreground leading-relaxed">
+                                            {content.learningPath.prerequisites}
+                                        </p>
+                                    </CardContent>
+                                </Card>
+
+                                <Card>
+                                    <CardHeader>
+                                        <CardTitle>Study Order</CardTitle>
+                                        <CardDescription>Recommended learning sequence</CardDescription>
+                                    </CardHeader>
+                                    <CardContent>
+                                        <p className="text-sm text-muted-foreground leading-relaxed">
+                                            {content.learningPath.studyOrder}
+                                        </p>
+                                    </CardContent>
+                                </Card>
+                            </div>
+                        </TabsContent>
+
+                        {/* Risks Tab */}
+                        <TabsContent value="risks" className="space-y-6">
+                            <div className="space-y-4">
+                                {content.risks.map((risk, index) => (
+                                    <RiskCard key={index} risk={risk} index={index} />
+                                ))}
+                            </div>
+                        </TabsContent>
+
+                        {/* Resources Tab */}
+                        <TabsContent value="resources" className="space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                {content.resources.map((resource, index) => (
+                                    <Card key={index} className="group hover:shadow-md transition-shadow">
+                                        <CardHeader className="pb-3">
+                                            <div className="flex items-start justify-between">
+                                                <CardTitle className="text-base leading-tight">
+                                                    {resource.title || `Resource ${index + 1}`}
+                                                </CardTitle>
+                                                {resource.url && (
+                                                    <ExternalLink className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                                                )}
+                                            </div>
+                                        </CardHeader>
+                                        <CardContent className="space-y-3">
+                                            {resource.description && (
+                                                <p className="text-sm text-muted-foreground leading-relaxed">
+                                                    {resource.description}
+                                                </p>
+                                            )}
+                                            {resource.url && (
+                                                <Button variant="outline" size="sm" className="w-full" asChild>
+                                                    <a
+                                                        href={resource.url}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        className="flex items-center gap-2"
+                                                    >
+                                                        Visit Resource
+                                                        <ExternalLink className="h-3 w-3" />
+                                                    </a>
+                                                </Button>
+                                            )}
+                                        </CardContent>
+                                    </Card>))}
+                            </div>
+                        </TabsContent>                </Tabs>
+                </motion.div>
+            </motion.div>
         </main>
     );
 }
