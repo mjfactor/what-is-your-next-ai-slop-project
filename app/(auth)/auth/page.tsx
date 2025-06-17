@@ -6,7 +6,6 @@ import { Separator } from "@/components/ui/separator"
 import { authClient } from "@/lib/auth-client"
 import { Github } from "lucide-react"
 import { useState } from "react"
-
 const GoogleIcon = () => (
     <svg className="size-4" viewBox="0 0 24 24" aria-hidden="true">
         <path
