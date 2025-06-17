@@ -4,16 +4,19 @@ import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Loader2 } from "lucide-react";
+import { Loader2, X } from "lucide-react";
 import { experimental_useObject as useObject } from '@ai-sdk/react';
 import { ProjectStructureSchema } from '@/lib/schema/let-ai-decide-schema';
 import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import UserProfile from "@/components/user-profile";
 
 
 export default function Home() {
   const router = useRouter();
   const [projectIdea, setProjectIdea] = useState("");
-  const { object, submit, isLoading, stop } = useObject({
+  const [isValidating, setIsValidating] = useState(false);
+  const { submit, isLoading, stop } = useObject({
     api: '/api/let-ai-decide',
     schema: ProjectStructureSchema,
     onFinish: ({ object, error }) => {
@@ -26,10 +29,40 @@ export default function Home() {
       }
     }
   });
+  const handleSubmit = async () => {
+    if (!projectIdea.trim()) {
+      toast.error("Please enter a project idea.");
+      return;
+    }
 
-  const handleSubmit = () => {
-    console.log("Submitting project idea:", projectIdea);
-    submit(projectIdea);
+    // Validate with AI first
+    setIsValidating(true);
+    try {
+      const response = await fetch('/api/validate-input', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ projectIdea }),
+      });
+
+      const result = await response.json();
+
+      if (!result.valid) {
+        toast.error(result.message);
+        setIsValidating(false);
+        return;
+      }
+
+      // If validation passes, proceed with generating the project plan
+      toast.success("Generating your project plan...");
+      setIsValidating(false);
+      submit(projectIdea);
+    } catch (error) {
+      console.error('Validation error:', error);
+      toast.error("An error occurred while validating your project idea. Please try again.");
+      setIsValidating(false);
+    }
   };
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -42,10 +75,8 @@ export default function Home() {
       {/* Animated Background Elements */}
       <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5" />
       <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse delay-1000" />
-
-      {/* User Profile Component */}
-      
+      <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse delay-1000" />      {/* User Profile Component */}
+      <UserProfile disabled={isLoading || isValidating} />
 
       {/* Main Content */}
       <motion.div
@@ -92,30 +123,39 @@ export default function Home() {
                   className="space-y-6"
                 >
                   {/* Project Idea Input */}
-                  <div className="space-y-2">
+                  <div className="space-y-2">                    
                     <Textarea
-                      id="project-idea"
-                      placeholder="Describe your project idea here... (e.g., 'A social media dashboard using React and Node.js' or 'Mobile app for fitness tracking')"
-                      value={projectIdea}
-                      onChange={(e) => setProjectIdea(e.target.value)}
-                      onKeyDown={handleKeyDown}
-                      className="min-h-32 resize-none text-base"
-                      disabled={isLoading}
-                    />
-                  </div>
-                  {/* Submit Button */}
+                    id="project-idea"
+                    placeholder="Describe your project idea here... (e.g., 'A social media dashboard using React and Node.js' or 'Mobile app for fitness tracking')"
+                    value={projectIdea}
+                    onChange={(e) => setProjectIdea(e.target.value)}
+                    onKeyDown={handleKeyDown}
+                    className="min-h-32 resize-none text-base"
+                    disabled={isLoading || isValidating}
+                  />
+                  </div>                  {/* Submit Button */}
                   <motion.div
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5, delay: 1.2 }}
+                    className="space-y-3"
                   >
                     <Button
                       onClick={handleSubmit}
-                      disabled={!projectIdea.trim() || isLoading}
+                      disabled={!projectIdea.trim() || isLoading || isValidating}
                       className="w-full h-12 text-base font-medium"
                       size="lg"
                     >
-                      {isLoading ? (
+                      {isValidating ? (
+                        <motion.div
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          className="flex items-center gap-2"
+                        >
+                          <Loader2 className="w-4 h-4 animate-spin" />
+                          Validating Idea...
+                        </motion.div>
+                      ) : isLoading ? (
                         <motion.div
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
@@ -133,6 +173,28 @@ export default function Home() {
                         </motion.span>
                       )}
                     </Button>
+
+                    {/* Stop Button - Only show when AI is generating */}
+                    <AnimatePresence>
+                      {isLoading && (
+                        <motion.div
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <Button
+                            onClick={stop}
+                            variant="outline"
+                            size="sm"
+                            className="w-full h-10 text-sm font-medium border-destructive/20 text-destructive hover:bg-destructive/10"
+                          >
+                            <X className="w-4 h-4 mr-2" />
+                            Stop Generation
+                          </Button>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </motion.div>
                 </motion.div>
               </motion.div>

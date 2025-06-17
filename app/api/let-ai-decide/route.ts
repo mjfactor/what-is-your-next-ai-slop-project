@@ -101,7 +101,7 @@ For AI integration specifically:
 - If the project explicitly requires AI features, recommend the most suitable AI technology stack
 - If AI is not explicitly mentioned, critically evaluate whether AI would truly enhance the project or if simpler solutions would be more appropriate
 - Recommend specific AI technologies only if they truly add value (not just because they're trendy)
-- Use search grounding to find current, relevant information about AI frameworks like LangGraph, CrewAI, Google AI SDK, LangChain, HuggingFace Transformers, Vercel AI SDK, etc.
+- Use search grounding to find current, relevant information about AI frameworks like LangGraph, CrewAI, Google Agent Development Kit, LangChain, HuggingFace Transformers, Vercel AI SDK, etc.
 - Consider factors like ease of integration, community support, and specific capabilities needed
 
 Required technologies:

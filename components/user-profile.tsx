@@ -14,7 +14,12 @@ import {
 import { LogOut, History, Home } from "lucide-react";
 import { useSession, signOut } from "@/lib/auth-client";
 import { useRouter } from 'next/navigation'
-const UserProfile = () => {
+
+interface UserProfileProps {
+    disabled?: boolean;
+}
+
+const UserProfile = ({ disabled = false }: UserProfileProps) => {
     const { data: session, isPending } = useSession();
     const Router = useRouter();
     const handleSignOut = async () => {
@@ -64,11 +69,14 @@ const UserProfile = () => {
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
                 className="fixed top-4 right-4 z-50"
-            >
-                <div className="backdrop-blur-xl bg-background/80 border border-border/50 rounded-xl p-4 shadow-lg">
+            >                <div className="backdrop-blur-xl bg-background/80 border border-border/50 rounded-xl p-4 shadow-lg">
                     <DropdownMenu>
                         <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="relative h-10 w-auto px-3 rounded-lg gap-3">
+                            <Button
+                                variant="ghost"
+                                className="relative h-10 w-auto px-3 rounded-lg gap-3"
+                                disabled={disabled}
+                            >
                                 <Avatar className="h-8 w-8">
                                     <AvatarImage
                                         src={session.user.image || undefined}
