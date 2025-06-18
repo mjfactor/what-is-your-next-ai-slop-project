@@ -1,112 +1,102 @@
 import { z } from 'zod';
 
 export const ResourceLinkSchema = z.object({
-    name: z.string().describe('The display name of the resource (e.g., "Next.js Documentation", "React Tutorial").'),
-    url: z.string().describe('The URL link to the resource.')
+    name: z.string().describe('The display name of the resource that you\'ll bookmark and never actually read (e.g., "Next.js Documentation", "React Tutorial").'),
+    url: z.string().describe('The URL link to the resource that will collect digital dust in your bookmarks folder.')
 });
 
 export const ProjectMetadataSchema = z.object({
-    complexity: z.enum(['Simple', 'Medium', 'Complex', 'Enterprise']).describe('The estimated complexity level of the project based on features, scale, and technical requirements.'),
-    estimatedTimeline: z.string().describe('Rough timeline estimate for MVP development (e.g., "2-4 weeks", "3-6 months").'),
-    teamSize: z.string().describe('Recommended team size and composition (e.g., "1-2 developers", "Small team: 3-5 developers with 1 designer").'),
-    budgetConsiderations: z.string().describe('Budget-related considerations including potential costs for third-party services, hosting, and development tools.'),
+    complexity: z.enum(['Simple', 'Medium', 'Complex', 'Enterprise']).describe('The estimated complexity level that will inevitably be wrong because every "simple" project becomes complex the moment you touch it.'),
+    estimatedTimeline: z.string().describe('Hilariously optimistic timeline estimate that you\'ll triple by the time you\'re done (e.g., "2-4 weeks" becomes "3-4 months").'),
+    teamSize: z.string().describe('Recommended team size before you realize you\'ll end up doing most of it yourself anyway (e.g., "1-2 developers", "Small team of 5 who will all have different opinions").'),
+    budgetConsiderations: z.string().describe('Budget considerations that don\'t include the therapy you\'ll need after dealing with third-party API pricing changes.'),
 });
 
 export const ArchitectureSchema = z.object({
-    pattern: z.string().describe('The recommended architectural pattern (e.g., Monolith, Microservices, Serverless, JAMstack, Micro-frontend).'),
-    reasoning: z.string().describe('Explanation of why this architecture pattern fits the project requirements, including scalability and complexity considerations.'),
-    alternatives: z.array(z.string()).optional().describe('Alternative architectural patterns that could work, with brief pros/cons.'),
+    pattern: z.string().describe('The architectural pattern you\'ll choose and then immediately regret (e.g., Monolith that should\'ve been microservices, Microservices that should\'ve been a monolith).'),
+    reasoning: z.string().describe('Sophisticated justification for why you totally didn\'t just pick whatever\'s trending on Twitter this week.'),
+    alternatives: z.array(z.string()).optional().describe('Other patterns you considered for 30 seconds before getting distracted by a new JavaScript framework.'),
 });
 
 export const TechStackSchema = z.object({
     frontend: z.object({
-        language: z.string().describe('The primary programming language for the frontend with justification for the choice (e.g., "TypeScript for type safety and better developer experience").'),
-        framework: z.string().describe('The main framework for building the user interface, explaining why it fits the project needs (e.g., "Next.js for SSR, SEO optimization, and full-stack capabilities").'),
-        libraries: z.array(z.string()).describe('Essential libraries for state management, data fetching, UI components, and utilities with specific use cases.'),
-        styling: z.string().describe('The styling approach with reasoning (e.g., "Tailwind CSS for rapid development and consistent design system").'),
-        buildTool: z.string().describe('The build tool and bundler recommendation (e.g., Vite, Webpack, Turbopack).'),
-    }).describe('Comprehensive frontend technology recommendations with justifications.'),
-    backend: z.object({
-        language: z.string().describe('The primary backend language with performance and ecosystem considerations (e.g., "Node.js for JavaScript ecosystem consistency and rapid development").'),
-        framework: z.string().describe('The server-side framework choice with scalability and feature considerations (e.g., "Express.js for simplicity" vs "NestJS for enterprise-grade applications").'),
-        apiStyle: z.string().describe('API architecture with trade-offs (e.g., "REST for simplicity and caching" vs "GraphQL for flexible data fetching").'),
-        runtime: z.string().optional().describe('Runtime environment if relevant (e.g., Node.js version, Python version, Docker).'),
-    }).describe('Backend technology stack with performance and scalability considerations.'),
-    database: z.object({
-        type: z.string().describe('Database type with data structure and scalability reasoning (e.g., "SQL for ACID compliance and complex relationships" vs "NoSQL for flexible schema and horizontal scaling").'),
-        provider: z.string().describe('Specific database provider with features and hosting considerations (e.g., "PostgreSQL for advanced features and reliability" or "MongoDB Atlas for managed NoSQL").'),
-        orm: z.string().optional().describe('ORM/ODM choice with type safety and query optimization considerations (e.g., "Prisma for type safety and excellent DX").'),
-        backupStrategy: z.string().optional().describe('Recommended backup and disaster recovery approach.'),
-    }).describe('Database technology with data modeling and reliability considerations.'),
-    developmentTools: z.object({
-        packageManager: z.string().describe('Package manager recommendation with workspace and performance considerations (e.g., "pnpm for disk efficiency and monorepo support").'),
-        linting: z.string().describe('Code linting setup (e.g., "ESLint with TypeScript rules and Prettier for consistent formatting").'),
-        versionControl: z.string().describe('Version control strategy and branch management approach (e.g., "Git with GitFlow for team collaboration").'),
-        ide: z.string().describe('Recommended IDE/editor setup with extensions and configurations.'),
-    }).describe('Development environment and tooling recommendations.'),
-    testing: z.object({
-        unit: z.string().describe('Unit testing framework with coverage and performance considerations (e.g., "Vitest for speed and modern features").'),
-        integration: z.string().describe('Integration testing approach and tools (e.g., "React Testing Library for component testing").'),
-        e2e: z.string().describe('End-to-end testing solution with CI/CD integration (e.g., "Playwright for cross-browser testing").'),
-        coverage: z.string().describe('Code coverage tool and target thresholds.'),
-    }).describe('Comprehensive testing strategy across all levels.'),
-    security: z.object({
-        authentication: z.string().describe('Authentication strategy with security considerations (e.g., "NextAuth.js with OAuth providers and JWT tokens").'),
-        authorization: z.string().describe('Authorization and access control approach (e.g., "Role-based access control with middleware").'),
-        dataProtection: z.string().describe('Data protection measures including encryption, validation, and sanitization.'),
-        vulnerabilityScanning: z.string().optional().describe('Security scanning and vulnerability management tools.'),
-    }).describe('Security architecture and best practices implementation.'),
-    monitoring: z.object({
-        errorTracking: z.string().describe('Error monitoring and alerting solution (e.g., "Sentry for error tracking and performance monitoring").'),
-        analytics: z.string().describe('User analytics and behavior tracking (e.g., "Google Analytics 4 with privacy compliance").'),
-        performance: z.string().describe('Performance monitoring and optimization tools (e.g., "Vercel Analytics for Core Web Vitals").'),
-        logging: z.string().describe('Logging strategy and centralized log management.'),
-    }).describe('Observability and monitoring infrastructure.'),
-    thirdPartyServices: z.object({
-        payment: z.string().optional().describe('Payment processing solution if applicable (e.g., "Stripe for comprehensive payment handling").'),
-        email: z.string().optional().describe('Email service provider for transactional emails (e.g., "Resend for developer-friendly email API").'),
-        fileStorage: z.string().optional().describe('File upload and storage solution (e.g., "Cloudinary for image optimization and CDN").'),
-        search: z.string().optional().describe('Search functionality if needed (e.g., "Algolia for fast, typo-tolerant search").'),
-    }).describe('Third-party service integrations based on project requirements.'),
-    deployment: z.object({
-        hosting: z.string().describe('Hosting platform with scalability and cost considerations (e.g., "Vercel for Next.js optimization and edge functions").'),
-        cicd: z.string().describe('CI/CD pipeline with automated testing and deployment (e.g., "GitHub Actions for seamless integration with repository").'),
-        containerization: z.string().optional().describe('Containerization strategy if applicable (e.g., "Docker for consistent deployment environments").'),
-        cdn: z.string().describe('Content delivery network for global performance (e.g., "Cloudflare for global CDN and security").'),
-    }).describe('Deployment and infrastructure strategy.'),
-    performance: z.object({
+        language: z.string().describe('The programming language you\'ll use before questioning all your life choices (e.g., "TypeScript because apparently JavaScript wasn\'t painful enough").'),
+        framework: z.string().describe('The framework that will be deprecated by the time you finish your project (e.g., "Next.js because React alone is too mainstream").'),
+        libraries: z.array(z.string()).describe('Essential libraries that will break with every major update and make you question why you didn\'t become a farmer instead.'),
+        styling: z.string().describe('The styling approach that seemed like a good idea until you had to center a div (e.g., "Tailwind CSS because writing actual CSS is apparently forbidden").'),
+        buildTool: z.string().describe('The build tool that will consume 47GB of your hard drive and take longer to start than your computer (e.g., "Vite because we needed another bundler").'),
+    }).describe('Frontend technology choices that will haunt your dreams and your bundle size.'), backend: z.object({
+        language: z.string().describe('The backend language that will make you nostalgic for frontend development (e.g., "Node.js because why learn a second language when you can suffer in one").'),
+        framework: z.string().describe('The server framework that promises simplicity but delivers complexity (e.g., "Express.js for when you want to build everything from scratch" vs "NestJS for when you miss Java").'),
+        apiStyle: z.string().describe('API architecture choice that you\'ll debate with your team for 3 weeks (e.g., "REST because GraphQL is too mainstream" vs "GraphQL because REST is too mainstream").'),
+        runtime: z.string().optional().describe('Runtime environment specification that Docker will ignore anyway.'),
+    }).describe('Backend choices that will make you question why you didn\'t just use Firebase.'), database: z.object({
+        type: z.string().describe('Database type that will spark religious wars in your team meetings (e.g., "SQL because NoSQL is chaos" vs "NoSQL because SQL is ancient").'),
+        provider: z.string().describe('Database provider that will definitely not have outages during your demo (e.g., "PostgreSQL for when you want to feel superior to MySQL users").'),
+        orm: z.string().optional().describe('ORM choice that will generate more boilerplate than you ever wanted to write (e.g., "Prisma for type safety and existential dread").'),
+        backupStrategy: z.string().optional().describe('Backup strategy you\'ll set up after your first data loss incident.'),
+    }).describe('Database decisions that will keep you up at night worrying about N+1 queries.'), developmentTools: z.object({
+        packageManager: z.string().describe('Package manager that will somehow break your project with every update (e.g., "pnpm because npm is too mainstream and yarn is too Google").'),
+        linting: z.string().describe('Code linting setup that will argue with you about semicolons and trailing commas for eternity.'),
+        versionControl: z.string().describe('Version control strategy that assumes your team actually writes meaningful commit messages.'),
+        ide: z.string().describe('IDE recommendation that comes with 47 extensions and uses 8GB of RAM to edit a text file.'),
+    }).describe('Development tools that will spend more time configuring than actually developing.'), testing: z.object({
+        unit: z.string().describe('Unit testing framework that you\'ll set up with the best intentions and 23% code coverage (e.g., "Vitest for speed and the illusion of productivity").'),
+        integration: z.string().describe('Integration testing that will break every time someone sneezes near the API.'),
+        e2e: z.string().describe('End-to-end testing that takes longer to run than your actual application startup time.'),
+        coverage: z.string().describe('Code coverage targets that look impressive until you realize most tests just check if functions exist.'),
+    }).describe('Testing strategy that everyone agrees is important but somehow never gets prioritized.'), security: z.object({
+        authentication: z.string().describe('Authentication system that you\'ll implement after your first security breach (e.g., "NextAuth.js because rolling your own auth is a bad life choice").'),
+        authorization: z.string().describe('Authorization system that assumes users won\'t try to break everything immediately.'),
+        dataProtection: z.string().describe('Data protection measures you\'ll add after someone tries to inject SQL into your contact form.'),
+        vulnerabilityScanning: z.string().optional().describe('Security scanning tools that will find 47 vulnerabilities in your node_modules folder.'),
+    }).describe('Security measures that transform from "we\'ll add that later" to "why didn\'t we add that earlier?"'), monitoring: z.object({
+        errorTracking: z.string().describe('Error monitoring that will spam your inbox at 3 AM with exceptions you can\'t reproduce locally.'),
+        analytics: z.string().describe('User analytics that will tell you nobody is using the feature you spent 3 months building.'),
+        performance: z.string().describe('Performance monitoring that confirms your app is indeed slower than you thought.'),
+        logging: z.string().describe('Logging strategy that will fill your disk with debug messages you forgot to remove.'),
+    }).describe('Monitoring setup that will make you painfully aware of every problem you hoped nobody would notice.'), thirdPartyServices: z.object({
+        payment: z.string().optional().describe('Payment service that will definitely not change their API the day before launch (e.g., "Stripe for taking money and your sanity").'),
+        email: z.string().optional().describe('Email service for sending messages that will end up in spam folders anyway.'),
+        fileStorage: z.string().optional().describe('File storage solution that will somehow cost more than your entire server infrastructure.'),
+        search: z.string().optional().describe('Search functionality that users will bypass by using Ctrl+F anyway.'),
+    }).describe('Third-party services that will nickel and dime you into bankruptcy.'), deployment: z.object({
+        hosting: z.string().describe('Hosting platform that will go down during your important demo (e.g., "Vercel for when you want to pretend you understand serverless").'),
+        cicd: z.string().describe('CI/CD pipeline that will fail because someone forgot to update the environment variables.'),
+        containerization: z.string().optional().describe('Docker setup that works on your machine but nowhere else.'),
+        cdn: z.string().describe('Content delivery network that makes your 5KB app load in 0.3 seconds instead of 0.4.'),
+    }).describe('Deployment strategy that will make you nostalgic for FTP uploads.'), performance: z.object({
         caching: z.object({
-            strategy: z.string().describe('Multi-level caching strategy (e.g., "Browser caching, CDN, and Redis for database queries").'),
-            provider: z.string().optional().describe('Caching service provider with scalability considerations (e.g., "Redis Cloud for distributed caching").'),
+            strategy: z.string().describe('Caching strategy that will somehow make your app slower until you figure out cache invalidation.'),
+            provider: z.string().optional().describe('Caching service that will cost more than your server when you hit their rate limits.'),
         }),
-        optimization: z.string().describe('Performance optimization techniques (e.g., "Code splitting, lazy loading, image optimization, and server-side rendering").'),
-        monitoring: z.string().describe('Performance monitoring and Core Web Vitals tracking approach.'),
-    }).describe('Performance optimization and caching strategies.'),
-    aiIntegration: z.object({
-        model: z.string().optional().describe('AI model selection with cost and capability considerations (e.g., "GPT-4 for complex reasoning, GPT-3.5 for cost-effective tasks").'),
-        library: z.string().optional().describe('AI integration library with ease of use and flexibility (e.g., "Vercel AI SDK for streaming and multiple provider support").'),
-        infrastructure: z.string().optional().describe('AI infrastructure and deployment considerations (e.g., "Edge functions for low latency AI responses").'),
-    }).describe('AI integration strategy if applicable to the project.'),
+        optimization: z.string().describe('Performance optimizations that will save 50ms but take 50 hours to implement.'),
+        monitoring: z.string().describe('Performance monitoring that will confirm your suspicion that everything is slower than it should be.'),
+    }).describe('Performance optimization strategies that will consume more resources than the problems they solve.'), aiIntegration: z.object({
+        model: z.string().optional().describe('AI model that will definitely not hallucinate important information (e.g., "GPT-4 for when you need expensive wrong answers").'),
+        library: z.string().optional().describe('AI integration library that changes its API every other Tuesday.'),
+        infrastructure: z.string().optional().describe('AI infrastructure that will consume your entire budget on day one of production.'),
+    }).describe('AI integration for when you absolutely need to add "AI-powered" to your marketing copy.'),
 });
 
 export const ProjectStructureSchema = z.object({
-    id: z.string().describe('A unique identifier for the generated project plan. This must be the ID provided in the prompt.'),
-    projectName: z.string().describe("A suitable, marketable name for the project based on the user's idea."),
-    projectDescription: z.string().describe('A comprehensive description of the project including core features, target audience, and value proposition.'),
-    metadata: ProjectMetadataSchema.describe('Project metadata including complexity, timeline, and resource requirements.'),
-    architecture: ArchitectureSchema.describe('Architectural pattern and structure recommendations.'),
-    techStack: TechStackSchema.describe('A comprehensive technology stack recommendation with detailed justifications.'),
+    id: z.string().describe('A unique identifier for this project that you\'ll definitely remember and not accidentally reuse.'),
+    projectName: z.string().describe("A marketable name that sounds way cooler than what you're actually building."),
+    projectDescription: z.string().describe('A comprehensive description that makes your simple CRUD app sound like the next unicorn startup.'),
+    metadata: ProjectMetadataSchema.describe('Project metadata including wildly optimistic timelines and budget estimates.'),
+    architecture: ArchitectureSchema.describe('Architectural decisions that seemed brilliant at 2 AM but questionable in daylight.'),
+    techStack: TechStackSchema.describe('Technology choices that will make future you question past you\'s sanity.'),
     developmentPhases: z.array(z.object({
-        phase: z.string().describe('Development phase name (e.g., "MVP", "Beta", "Production").'),
-        duration: z.string().describe('Estimated duration for this phase.'),
-        features: z.array(z.string()).describe('Key features to be developed in this phase.'),
-        priorities: z.array(z.string()).describe('Technical priorities and focus areas for this phase.'),
-    })).describe('Recommended development phases with features and timelines.'),
-    reasoning: z.string().describe('A detailed, comprehensive explanation for the entire technology stack, including trade-offs, alternatives considered, and why each choice is optimal for this specific project.'),
-    risks: z.array(z.string()).describe('Technical risks and challenges that might arise during development.'),
-    recommendations: z.array(z.string()).describe('Best practices, tips, and specific recommendations for successful project execution.'), resources: z.object({
-        documentation: z.array(ResourceLinkSchema).describe('Essential documentation and learning resources for the chosen technologies with direct links.'),
-        tutorials: z.array(ResourceLinkSchema).describe('Recommended tutorials and guides for getting started with direct links.'),
-        communities: z.array(ResourceLinkSchema).describe('Developer communities and forums for support and learning with direct links.'),
-    }).describe('Learning resources and community support for the recommended technologies. Include structured links with names and URLs to official documentation, tutorials, and community forums.'),
+        phase: z.string().describe('Development phase name that sounds professional (e.g., "MVP", "Beta", "Please-just-work").'),
+        duration: z.string().describe('Estimated duration that assumes nothing will go wrong (spoiler: everything goes wrong).'),
+        features: z.array(z.string()).describe('Features that seemed essential until you realized how hard they are to implement.'),
+        priorities: z.array(z.string()).describe('Technical priorities that will change every week based on the latest blog post you read.'),
+    })).describe('Development phases with timelines that exist in a parallel universe where CSS behaves logically.'),
+    reasoning: z.string().describe('A detailed explanation for why these technology choices are totally not influenced by whatever was trending on Hacker News yesterday.'),
+    risks: z.array(z.string()).describe('Technical risks that you\'ll optimistically assume won\'t happen to you.'),
+    recommendations: z.array(z.string()).describe('Best practices that you\'ll follow religiously for the first week.'), resources: z.object({
+        documentation: z.array(ResourceLinkSchema).describe('Essential documentation that you\'ll bookmark with every intention of reading thoroughly someday.'),
+        tutorials: z.array(ResourceLinkSchema).describe('Tutorials you\'ll start enthusiastically and abandon halfway through when you get distracted by a Stack Overflow answer.'),
+        communities: z.array(ResourceLinkSchema).describe('Developer communities where you\'ll lurk silently instead of asking the questions you actually need answered.'),
+    }).describe('Learning resources that will make you feel productive while procrastinating on actual coding.'),
 });

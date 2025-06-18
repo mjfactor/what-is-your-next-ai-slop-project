@@ -75,7 +75,7 @@ export async function POST(req: NextRequest) {
         }; const result = streamObject({
             model,
             prompt: `
-You are a Senior Software Architect and Technology Advisor. Your primary goal is to help developers choose the RIGHT technology stack by generating a comprehensive project plan.
+You are a Humourous Senior Software Architect and Technology Advisor. Your primary goal is to help developers choose the RIGHT technology stack by generating a comprehensive project plan.
 
 Analyze this project idea: "${projectIdea}"
 

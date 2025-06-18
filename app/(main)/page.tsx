@@ -102,10 +102,10 @@ export default function Home() {
                 className="text-center mb-8"
               >
                 <h1 className="text-4xl md:text-5xl font-bold text-foreground mb-4 bg-gradient-to-br from-foreground to-foreground/70 bg-clip-text">
-                  AI Project Planner
+                  What's your next slop project? 🧠
                 </h1>
                 <p className="text-lg text-muted-foreground">
-                  Describe your project idea and let AI help you plan and structure it
+                  Describe your idea and let AI generate a "guide" for you 🤔
                 </p>
               </motion.div>
 
