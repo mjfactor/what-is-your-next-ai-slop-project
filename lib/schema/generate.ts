@@ -1,5 +1,10 @@
 import { z } from 'zod';
 
+export const ResourceLinkSchema = z.object({
+    name: z.string().describe('The display name of the resource (e.g., "Next.js Documentation", "React Tutorial").'),
+    url: z.string().describe('The URL link to the resource.')
+});
+
 export const ProjectMetadataSchema = z.object({
     complexity: z.enum(['Simple', 'Medium', 'Complex', 'Enterprise']).describe('The estimated complexity level of the project based on features, scale, and technical requirements.'),
     estimatedTimeline: z.string().describe('Rough timeline estimate for MVP development (e.g., "2-4 weeks", "3-6 months").'),
@@ -99,13 +104,9 @@ export const ProjectStructureSchema = z.object({
     })).describe('Recommended development phases with features and timelines.'),
     reasoning: z.string().describe('A detailed, comprehensive explanation for the entire technology stack, including trade-offs, alternatives considered, and why each choice is optimal for this specific project.'),
     risks: z.array(z.string()).describe('Technical risks and challenges that might arise during development.'),
-    recommendations: z.array(z.string()).describe('Best practices, tips, and specific recommendations for successful project execution.'),
-    resources: z.object({
-        documentation: z.array(z.string()).describe('Essential documentation and learning resources for the chosen technologies.'),
-        tutorials: z.array(z.string()).describe('Recommended tutorials and guides for getting started.'),
-        communities: z.array(z.string()).describe('Developer communities and forums for support and learning.'),
-    }).describe('Learning resources and community support for the recommended technologies.'),
+    recommendations: z.array(z.string()).describe('Best practices, tips, and specific recommendations for successful project execution.'), resources: z.object({
+        documentation: z.array(ResourceLinkSchema).describe('Essential documentation and learning resources for the chosen technologies with direct links.'),
+        tutorials: z.array(ResourceLinkSchema).describe('Recommended tutorials and guides for getting started with direct links.'),
+        communities: z.array(ResourceLinkSchema).describe('Developer communities and forums for support and learning with direct links.'),
+    }).describe('Learning resources and community support for the recommended technologies. Include structured links with names and URLs to official documentation, tutorials, and community forums.'),
 });
-
-
-

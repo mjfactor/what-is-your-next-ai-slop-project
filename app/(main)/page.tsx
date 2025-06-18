@@ -6,7 +6,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { Loader2, X } from "lucide-react";
 import { experimental_useObject as useObject } from '@ai-sdk/react';
-import { ProjectStructureSchema } from '@/lib/schema/let-ai-decide-schema';
+import { ProjectStructureSchema } from '@/lib/schema/generate';
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import UserProfile from "@/components/user-profile";

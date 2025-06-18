@@ -1,7 +1,7 @@
 import { google } from '@ai-sdk/google';
 import { streamObject } from 'ai';
 import { NextRequest, NextResponse } from 'next/server';
-import { ProjectStructureSchema } from '@/lib/schema/let-ai-decide-schema';
+import { ProjectStructureSchema } from '@/lib/schema/generate';
 import { auth } from '@/lib/auth';
 import { headers } from 'next/headers';
 import { NeonDialect } from 'kysely-neon';

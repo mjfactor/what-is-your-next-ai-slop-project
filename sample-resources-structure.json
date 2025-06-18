@@ -1,0 +1,55 @@
+{
+    "resources": {
+        "documentation": [
+            {
+                "name": "Next.js Documentation",
+                "url": "https://nextjs.org/docs",
+                "description": "Official Next.js documentation with guides and API reference"
+            },
+            {
+                "name": "React Documentation",
+                "url": "https://react.dev/",
+                "description": "Official React documentation with tutorials and reference"
+            },
+            {
+                "name": "TypeScript Documentation",
+                "url": "https://www.typescriptlang.org/docs/",
+                "description": "TypeScript handbook and reference documentation"
+            }
+        ],
+        "tutorials": [
+            {
+                "name": "Next.js Learn",
+                "url": "https://nextjs.org/learn",
+                "description": "Interactive course to learn Next.js fundamentals"
+            },
+            {
+                "name": "React Tutorial",
+                "url": "https://react.dev/learn",
+                "description": "Step-by-step React tutorial for beginners"
+            }
+        ],
+        "communities": [
+            {
+                "name": "Next.js Discord",
+                "url": "https://discord.com/invite/bUG2bvbtHy",
+                "description": "Official Next.js Discord community"
+            },
+            {
+                "name": "r/reactjs",
+                "url": "https://www.reddit.com/r/reactjs",
+                "description": "React community on Reddit"
+            },
+            {
+                "name": "r/nextjs",
+                "url": "https://www.reddit.com/r/nextjs",
+                "description": "Next.js community on Reddit"
+            },
+            {
+                "name": "Stack Overflow",
+                "url": "https://stackoverflow.com/questions/tagged/reactjs",
+                "description": "Programming Q&A for React and Next.js"
+            }
+        ]
+    }
+}
