@@ -16,7 +16,7 @@ Naming Conventions
 - Favor named exports for components.
 
 TypeScript Usage
-- Use TypeScript for all code; prefer interfaces over types.
+- Use `type` for type aliases and `interface` for object shapes.
 - Avoid enums; use maps instead.
 - Use functional components with TypeScript interfaces.
 
