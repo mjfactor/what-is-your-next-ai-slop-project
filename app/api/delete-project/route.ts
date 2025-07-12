@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
+import { connectRedis } from '@/lib/redis';
 
 interface DatabaseSchema {
     generated_project_plan: {
@@ -57,6 +58,17 @@ export async function DELETE(request: NextRequest) {
                 { error: 'Project not found or access denied' },
                 { status: 404 }
             );
+        }
+
+        // Invalidate Redis cache for this user
+        try {
+            const redis = await connectRedis();
+            const cacheKey = `user_projects:${session.user.id}`;
+            await redis.del(cacheKey);
+            console.log('Cache invalidated for user:', session.user.id);
+        } catch (redisError) {
+            console.error('Redis cache invalidation error:', redisError);
+            // Don't fail the whole operation if Redis fails
         }
 
         return NextResponse.json({ success: true });

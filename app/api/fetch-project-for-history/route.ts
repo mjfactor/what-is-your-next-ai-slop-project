@@ -1,14 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { auth } from '@/lib/auth';
-
-// TypeScript interfaces
-interface ProjectResponse {
-    id: string;
-    generated_content: any;
-    project_idea: string | null;
-    created_at: Date;
-    updated_at: Date;
-}
+import { connectRedis } from '@/lib/redis';
 
 interface DatabaseSchema {
     generated_project_plan: {
@@ -35,6 +27,28 @@ export async function GET(request: NextRequest) {
                 { status: 401 }
             );
         }
+        const redis = await connectRedis();
+        const userId = session.user.id;
+        const cacheKey = `user_projects:${userId}`;
+
+        // Try to get data from Redis cache first
+        let cachedData = null;
+
+        if (redis) {
+            try {
+                cachedData = await redis.get(cacheKey);
+                if (cachedData) {
+                    console.log('Cache hit for user:', userId);
+                    return NextResponse.json(JSON.parse(cachedData));
+                }
+            } catch (redisError) {
+                console.error('Redis get error:', redisError);
+                // Continue to database query if Redis fails
+            }
+        }
+
+        // Cache miss or Redis unavailable - query database
+        console.log('Cache miss for user:', userId);
 
         // Import the database connection
         const { NeonDialect } = await import('kysely-neon');
@@ -56,14 +70,26 @@ export async function GET(request: NextRequest) {
                 'created_at',
                 'updated_at'
             ])
-            .where('user_id', '=', session.user.id)
+            .where('user_id', '=', userId)
             .orderBy('created_at', 'desc')
             .execute();
 
-        return NextResponse.json({
+        const result = {
             projects,
             count: projects.length
-        });
+        };
+
+        // Cache the result in Redis with 5-minute TTL
+        if (redis) {
+            try {
+                await redis.setEx(cacheKey, 300, JSON.stringify(result));
+                console.log('Data cached for user:', userId);
+            } catch (redisError) {
+                console.error('Redis set error:', redisError);
+            }
+        }
+
+        return NextResponse.json(result);
 
     } catch (error) {
         console.error('Error fetching projects:', error);

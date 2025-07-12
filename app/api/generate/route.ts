@@ -7,6 +7,7 @@ import { headers } from 'next/headers';
 import { NeonDialect } from 'kysely-neon';
 import { Kysely } from 'kysely';
 import { generateId } from 'ai';
+import { connectRedis } from '@/lib/redis';
 
 // Define database interface types
 interface Database {
@@ -29,7 +30,6 @@ const db = new Kysely<Database>({
     }),
 });
 
-export const runtime = 'edge';
 
 export async function POST(req: NextRequest) {
     try {
@@ -100,6 +100,17 @@ IMPORTANT: Include this exact ID in your response: "${generatedId}"
                             typeof projectIdea === 'string' ? projectIdea : JSON.stringify(projectIdea),
                             generatedId
                         );
+
+                        // Invalidate Redis cache for this user after successful save
+                        try {
+                            const redis = await connectRedis();
+                            const cacheKey = `user_projects:${session.user.id}`;
+                            await redis.del(cacheKey);
+                            console.log('Cache invalidated for user:', session.user.id);
+                        } catch (redisError) {
+                            console.error('Redis cache invalidation error:', redisError);
+                            // Don't fail the whole operation if Redis fails
+                        }
                     } catch (dbErr) {
                         console.error("Failed to save to database:", dbErr);
                     }
