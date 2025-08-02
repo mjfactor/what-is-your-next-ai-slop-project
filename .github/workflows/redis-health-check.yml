@@ -4,38 +4,61 @@ on:
   schedule:
     # Run every 5 days at midnight UTC
     - cron: '0 0 */5 * *'
-  workflow_dispatch: # Allow manual triggering
+  workflow_dispatch: # Allow manual trigger for testing
 
 jobs:
-  ping-redis:
+  redis-health-check:
     runs-on: ubuntu-latest
     
     steps:
-    - name: Ping Redis Service
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      
+    - name: Install Redis CLI
       run: |
-        echo "Pinging Redis service..."
+        sudo apt-get update
+        sudo apt-get install -y redis-tools
         
-        # Ping the Redis endpoint (replace with your actual domain when deployed)
-        response=$(curl -s -w "%{http_code}" \
-          -H "Authorization: Bearer ${{ secrets.PING_SECRET }}" \
-          -H "Content-Type: application/json" \
-          "${{ secrets.APP_URL }}/api/ping-redis")
-        
-        http_code="${response: -3}"
-        body="${response%???}"
-        
-        echo "HTTP Status: $http_code"
-        echo "Response Body: $body"
-        
-        if [ "$http_code" -eq 200 ]; then
-          echo "✅ Redis ping successful!"
+    - name: Parse Redis URL and Test Connection
+      env:
+        REDIS_URL: ${{ secrets.REDIS_URL }}
+        PING_SECRET: ${{ secrets.PING_SECRET }}
+      run: |
+        # Extract connection details from Redis URL
+        # Format: redis://username:password@host:port
+        if [[ $REDIS_URL =~ redis://([^:]+):([^@]+)@([^:]+):([0-9]+) ]]; then
+          USERNAME="${BASH_REMATCH[1]}"
+          PASSWORD="${BASH_REMATCH[2]}"
+          HOST="${BASH_REMATCH[3]}"
+          PORT="${BASH_REMATCH[4]}"
+          
+          echo "Connecting to Redis at $HOST:$PORT"
+          echo "Username: $USERNAME"
+          
+          # Test Redis connection with PING command
+          if redis-cli -h "$HOST" -p "$PORT" -a "$PASSWORD" PING | grep -q "PONG"; then
+            echo "✅ Redis health check PASSED - Server responded with PONG"
+            echo "SUCCESS: Redis database is healthy and responsive"
+          else
+            echo "❌ Redis health check FAILED - Server did not respond with PONG"
+            echo "ERROR: Redis database is not responding correctly"
+            exit 1
+          fi
         else
-          echo "❌ Redis ping failed with status $http_code"
-          echo "Response: $body"
+          echo "❌ Invalid REDIS_URL format"
+          echo "Expected format: redis://username:password@host:port"
           exit 1
         fi
         
-    - name: Log timestamp
+    - name: Log Health Check Status
+      if: always()
       run: |
-        echo "Redis health check completed at: $(date)"
-        echo "Next check scheduled in 5 days"
+        echo "Redis health check completed at $(date)"
+        echo "Next scheduled check will run in 5 days"
+        
+    - name: Notify on Failure
+      if: failure()
+      run: |
+        echo "🚨 ALERT: Redis health check failed!"
+        echo "Please check the Redis database status immediately."
+        echo "Connection details and logs are available in the workflow run above."
